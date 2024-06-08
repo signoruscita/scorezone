@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Scorezone</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/swiper@5.3.7/css/swiper.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/pattern.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@600&display=swap">
+  <link rel="stylesheet" href="css.css">
+
+  <script src="https://unpkg.com/swiper@5.3.7/js/swiper.min.js"></script>
+  <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script>
+
+  <script>
+    gsheetData = {
+      debug: true,
+      documentId: '1DUYMFEltaDnXWeG0fgsO2dDWXTKylZtx3E6bzYSuyJM', // id from gsheet "shared with anyone"
+      sheetName: 'indice'
+    }
+  </script>
+  <script src="js-gsheet.js"></script>
+  <title>Scorezone</title>
+</head>
+<body>
+  <!-- Swiper -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div>
+          <h1>Scorezone</h1>
+          <p>
+            Swipe a destra per iniziare
+            <br>
+            (o usa le frecce della tastiera)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="js-app.js"></script>
+</body>
+</html>

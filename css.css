@@ -1,0 +1,99 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  position: relative;
+  height: 100%;
+  font-family: 'Baloo Tamma 2', cursive;
+}
+
+body {
+  background: #eee;
+  /* font-family: Helvetica Neue, Helvetica, Arial, sans-serif; */
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background-color: #fcf0c2;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  color: red;
+  background-color: yellow;
+}
+
+.swiper-slide header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: black;
+}
+
+.swiper-slide blockquote {
+  background-color: black;
+  width: 90%;
+  padding: 2vw;
+  border-radius: .2vw;
+  box-shadow: 8px 7px 8px 3px currentColor;
+}
+
+.swiper-slide blockquote>h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.swiper-slide blockquote>.body {
+  text-align: center;
+  font-size: 6vw;
+  overflow-wrap: break-word;
+}
+
+.swiper-slide blockquote>.body>p {
+  text-align: center;
+  font-size: 1rem;
+  overflow-wrap: break-word;
+}
+
+.swiper-slide blockquote>img {
+  display: block;
+  max-width: 65%;
+  height: 7rem;
+  margin: 0.5rem auto;
+}
+
+.swiper-slide blockquote footer {
+  text-align: right;
+}
+
+.swiper-slide blockquote a:link,
+.swiper-slide blockquote a:visited,
+.swiper-slide blockquote a:hover,
+.swiper-slide blockquote a:active {
+  color: currentColor;
+}
