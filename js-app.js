@@ -203,16 +203,21 @@ ${JSON.stringify(scoreItem, null, 2)}
   }
 
   function dateFormater(date) {
-    const event = date;
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
+    if (!date)  { return '' }
+    try {
+      const event = date;
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
 
-    const formatted = event.toLocaleDateString(undefined, options);
-    return formatted
+      const formatted = event.toLocaleDateString(undefined, options);
+      return formatted
+    } catch(e) {
+      return date;
+    }
   }
 
 })();
