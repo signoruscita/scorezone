@@ -52,9 +52,6 @@
         </div>
         ${scoreItem.quote ? `<footer>— ${scoreItem.quote}</footer>` : ''}
       </blockquote>
-      <!--
-${JSON.stringify(scoreItem, null, 2)}
-      -->
     </div>
   `;
   }
