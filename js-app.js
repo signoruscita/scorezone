@@ -42,12 +42,12 @@
         <small>
           ${scoreItem.romset ? 'romset ' + scoreItem.romset + '. ' : ''}${converter.makeHtml(scoreItem.regole || '')}
         </small>
-        <img src="assets/${scoreItem.id}-title.png"  loading="lazy" alt= "">
+        <img src="assets/webp/${scoreItem.id}-title.webp"  loading="lazy" alt= "">
         <div class="body">
          ${getPlayersHtml(scoreItem)}
         <p>
-          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/${scoreItem.id}-cover.png"  loading="lazy" alt= "">
-          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/${scoreItem.id}-screen.png"  loading="lazy" alt= "">
+          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-cover.webp"  loading="lazy" alt= "">
+          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-screen.webp"  loading="lazy" alt= "">
         </p>
         </div>
         ${scoreItem.quote ? `<footer>— ${scoreItem.quote}</footer>` : ''}
@@ -126,9 +126,6 @@ ${JSON.stringify(scoreItem, null, 2)}
     return `
       color: hsla(${c1},70%,70%,1);
       background-color: hsla(${c2},70%,30%,1);
-      nope-background-image: url('assets/${scoreItemId}-cover.png');
-      nope-background-size: cover;
-      nope-background-position: center center;
     `;
   }
 
