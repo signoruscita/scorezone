@@ -1,10 +1,6 @@
 !(function () {
   const converter = new showdown.Converter();
 
-  const PARAM_NAME_SEARCH = 'sfida';
-  const PARAM_NAME_HISTORY = 'score';
-  const PARAM_ATTRIBUTE_NAME_ID = 'data-id';
-
   initData()
     .then((scoresList) => {
 
@@ -14,44 +10,55 @@
         }
         return 1;
       })
-      const parent = document.querySelector('main');
-      initIndice(scoresList, parent);
+      initNav(scoresList, document.querySelector('nav'));
+      initIndice(scoresList, document.querySelector('main'));
     })
     .catch((err) => {
       console.log('error', err);
     });
 
+
+  function initNav(scoresList, parentEl) {
+    const out = scoresList.reduce((acc, scoreItem) => {
+      acc.push(
+        `<a class="nes-btn is-primary" href="#sfida-${scoreItem.id}"><small>${scoreItem.titolo}</small></a>`
+      );
+      return acc;
+    }, []).join('\n');
+    parentEl.innerHTML = out;
+  }
   function initIndice(scoresList, parentEl) {
-    const outhtml = `
-      <table style="width: 1000px; margin: 0 auto;">
-          ${scoresList.map((scoreItem, index) => {
-            return `
-              <tr>
-                <td>
-                  <small>${scoreItem.id} ${dateFormater(scoreItem.data)}</small>
-                </td>
-                <td>
-                  <h2>${scoreItem.titolo}</h2>
-                  <small>
-                    ${scoreItem.romset ? 'romset ' + scoreItem.romset + '. ' : ''}${converter.makeHtml(scoreItem.regole || '')}
-                  </small>
-                </td>
-                <td>
-                  <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-title.webp"  loading="lazy" alt= "" />
-                  <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-cover.webp"  loading="lazy" alt= "" />
-                  <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-screen.webp"  loading="lazy" alt= "" />
-                </td>
-                <td>
-                  ${getPlayersHtml(scoreItem)}
-                </td>
-                <td>
-                  ${scoreItem.quote ? `— ${scoreItem.quote}` : ''}
-                </td>
-              </tr>
-            `;
-          }).join('\n')}
-      </table>
+    const outhtml = scoresList.map((scoreItem, _index) => {
+    return `
+      <section class="scheda nes-container with-title is-dark">
+        <h3 class="title" id="sfida-${scoreItem.id}">#${scoreItem['sfida n.']} ${scoreItem.titolo} ${dateFormater(scoreItem.data)}</h3>
+        <div class="nes-container is-rounded is-centered is-dark">
+          <img class="img-title"
+            src="assets/webp/${scoreItem.id}-title.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
+
+          ${scoreItem.romset ? converter.makeHtml('romset:' + scoreItem.romset) : ''}
+
+          <div>
+            ${converter.makeHtml(scoreItem.regole || '')}
+          </div>
+
+          </div>
+        <div class="nes-table-responsive">
+          <table class="nes-table is-bordered is-dark">
+            <tbody>
+              ${getPlayersHtml(scoreItem)}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <img class="img-additional"
+              src="assets/webp/${scoreItem.id}-cover.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
+            <img class="img-additional"
+              src="assets/webp/${scoreItem.id}-screen.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
+        </p>
+      </section>
     `;
+  }).join('\n');
     parentEl.innerHTML = outhtml;
   }
 
@@ -81,7 +88,18 @@
       }
       return acc;
     }, []).reduce((acc, player) => {
-      return `${acc}\n<p>${player.pos} - ${player.pts} - ${player.name}</p>`
+      return `${acc}\n
+        <tr>
+          <td class="text-right">${player.pos}</td>
+          <td  class="text-right">${player.pts}</td>
+          <td>${player.name}</td>
+          <td class="nowrap">
+            ${player.pos === 1 ? '<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>' : ''}
+            ${player.pos === 2 ? '<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>' : ''}
+            ${player.pos === 3 ? '<i class="nes-icon star"></i>' : ''}
+          </td>
+        </tr>
+        `
     }, '');
   }
 
@@ -117,3 +135,44 @@
   }
 
 })();
+
+/**
+{
+    "id": 1,
+    "sfida n.": 1,
+    "data": "2000-01-02T03:04:05.006Z",
+    "titolo": "Titolo",
+    "regole": "some markdown text",
+    "romset": "romsetname",
+    "pos_01_pts": 0,
+    "pos_01_name": null,
+    "pos_02_pts": 0,
+    "pos_02_name": null,
+    "pos_03_pts": 0,
+    "pos_03_name": null,
+    "pos_04_pts": 0,
+    "pos_04_name": null,
+    "pos_05_pts": 0,
+    "pos_05_name": null,
+    "pos_06_pts": 0,
+    "pos_06_name": null,
+    "pos_07_pts": 0,
+    "pos_07_name": null,
+    "pos_08_pts": 0,
+    "pos_08_name": null,
+    "pos_09_pts": 0,
+    "pos_09_name": null,
+    "pos_10_pts": 0,
+    "pos_10_name": null,
+    "pos_11_pts": 0,
+    "pos_11_name": null,
+    "pos_12_pts": 0,
+    "pos_12_name": null,
+    "pos_13_pts": 0,
+    "pos_13_name": null,
+    "pos_14_pts": 0,
+    "pos_14_name": null,
+    "pos_15_pts": 0,
+    "pos_15_name": null
+}
+*/
