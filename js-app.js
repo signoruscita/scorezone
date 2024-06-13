@@ -135,10 +135,12 @@
     var gsheetData = window.gsheetData || {};
     var documentId = gsheetData.documentId || '';
     var sheetName = gsheetData.sheetName || '';
+    var cache = gsheetData.cache || false;
 
     var doc = gsheetjs.downloadSheet({
       documentId: documentId,
       sheetName: sheetName,
+      cache: cache,
     });
 
     return doc;
