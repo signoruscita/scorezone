@@ -29,7 +29,7 @@ html {
     conic-gradient(var(--a) 40%,var(--c1) 240deg,var(--c3) 0);
   background-size: calc(1.5*var(--s)) var(--s);
 
-  background: #fafafa;
+  /* background: #fafafa; */
 }
 
 body {
@@ -58,14 +58,11 @@ body {
   margin-top: -16px;
 }
 
-.scoreitem-img {
-  max-width: 25%;
-  max-height: 100%;
-}
 dd > * {
   margin: 0;
   padding: 0;
 }
+
 input, button, label {
   cursor: pointer;
 }
@@ -95,17 +92,20 @@ input, button, label {
 .mt1 {
   margin-top: 1rem;
 }
+.mb1 {
+  margin-bottom: 1rem;
+}
 
 .mr1 {
   margin-right: 1rem;
 }
 
 .mt2 {
-  margin-top: 2rem;
+  margin-top: 2rem !important;
 }
 
 .mb2 {
-  margin-bottom: 2rem;
+  margin-bottom: 2rem !important;
 }
 
 .dib {
@@ -161,7 +161,15 @@ nav {
 }
 
 
-.nes-container.with-title>.title {
+.scheda footer .scoreitem-img {
+  height: 20vh;
+  max-width: 45%;
+}
+
+.scheda header .scoreitem-img {
+  height: auto;
+  width: 50%;
+  max-width: 50%;
 }
 
 /* loader - start */
@@ -185,3 +193,5 @@ nav {
     80%{background-position:0%  50%, 50%  50%,100% 100%}
 }
 /* loader - end */
+
+

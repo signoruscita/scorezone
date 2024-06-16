@@ -115,47 +115,52 @@
 
   function HtmlTemplate_Sfida(scoreItem) {
     return `
-      <section class="scheda" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
-        <header>
-          <h3 class="title" id="sfida-${scoreItem.id}">#${scoreItem['sfida n.']} ${scoreItem.titolo}</h3>
+      <section class="scheda mt2 mb2 nes-container is-rounded" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
+        <header class="text-center">
+          <h3 class="title" id="sfida-${scoreItem.id}">
+            <small>#${scoreItem['sfida n.']} ${scoreItem.titolo}</small>
+          </h3>
+          <br>
+          <img class="scoreitem-img"
+            src="assets/webp/${scoreItem.id}-title.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
         </header>
 
-        <div class="body">
-          <div>
-            <img class="scoreitem-img"
-              src="assets/webp/${scoreItem.id}-title.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
-          </div>
-
-          <div>
-            <dl>
-              <dt>sfida numero</dt>
-                <dd>${scoreItem['sfida n.']}</dd>
-              <dt>giocato</dt>
-                <dd>${Utils_dateFormater(scoreItem.data)}</dd>
-              <dt>romset</dt>
-                <dd>${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
-              <dt>regole</dt>
-                <dd>${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
-              <dt>Vincitore</dt>
-                <dd>${scoreItem.pos_01_name ?
-                    `<i class="nes-icon trophy is-small"></i> ${scoreItem.pos_01_name}`
-                    : '-n.a.-'}</dd>
-            </dl>
-          </div>
-
-          <div>
-            ${HtmlTemplate_Sfida_Classifica(scoreItem)}
-          </div>
+        <div class="body mt2 mb2" style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-content: flex-start;
+          justify-content: space-evenly;
+          align-items: flex-start;
+        ">
+            <div>
+              <dl>
+                <dt class="nes-text is-disabled">sfida numero</dt>
+                  <dd class="nes-text is-primary">${scoreItem['sfida n.']}</dd>
+                <dt class="nes-text is-disabled">giocato</dt>
+                  <dd class="nes-text is-primary">${Utils_dateFormater(scoreItem.data)}</dd>
+                <dt class="nes-text is-disabled">romset</dt>
+                  <dd class="nes-text is-primary">${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
+                <dt class="nes-text is-disabled">regole</dt>
+                  <dd class="nes-text is-primary">${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
+                <dt class="nes-text is-disabled">Vincitore</dt>
+                  <dd class="nes-text is-primary">${scoreItem.pos_01_name ?
+                      `<i class="nes-icon trophy is-small"></i> ${scoreItem.pos_01_name}`
+                      : '-n.a.-'}</dd>
+              </dl>
+            </div>
+            <div>
+              ${HtmlTemplate_Sfida_Classifica(scoreItem)}
+            </div>
         </div>
 
-        <footer>
-          <p>
-            <img class="scoreitem-img"
+        <footer class="text-center mt1">
+            <img class="scoreitem-img mr1"
                 src="assets/webp/${scoreItem.id}-cover.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
               <img class="scoreitem-img"
                 src="assets/webp/${scoreItem.id}-screen.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
-          </p>
         </footer>
+        <!--<progress class="nes-progress is-pattern mt2" value="100" max="100"></progress>-->
       </section>
     `
   }
@@ -201,9 +206,9 @@
   function HtmlTemplate_Sfida_Classifica_Giocatore(player) {
     return `
       <tr>
-        <td class="text-right">${player.pos}&nbsp;</td>
+        <td class="text-right nes-text is-success">${player.pos}&nbsp;</td>
         <td  class="text-right">${player.pts}&nbsp;</td>
-        <td>${player.name}</td>
+        <td class="nes-text is-primary">${player.name}</td>
         <td class="nowrap">
           ${player.pos === 1 ? '': ''}
           ${player.pos === 2 ? '' : ''}
