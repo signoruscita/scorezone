@@ -1,0 +1,187 @@
+/* @font-face {
+  font-family: "FF7";
+  src:url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.eot") format("eot"),
+      url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.woff") format("woff"),
+      url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.ttf") format("truetype"),
+      url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.svg#FinalFantasyVII") format("svg");
+  font-weight:normal;
+  font-style:normal;
+} */
+
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap"); /* font for nes.css */
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"); /* font pixel */
+@import url("https://unpkg.com/nes.css@2.3.0/css/nes.min.css"); /* nes.css */
+/* @import url("https://unpkg.com/pattern.css"); patterns bg */
+
+
+html {
+  --s: 101px; /* control the size*/
+  --c1: #2e2e2e;
+  --c2: #821719;
+  --c3: #9c9cc9;
+
+  --a:from -30deg at;
+  background:
+    linear-gradient(#0000 50%,#0004 0),
+    conic-gradient(var(--a) 90%,var(--c1) 240deg,#0000     0),
+    conic-gradient(var(--a) 75%,var(--c2) 240deg,#0000     0),
+    conic-gradient(var(--a) 25%,#0000     240deg,var(--c1) 0),
+    conic-gradient(var(--a) 40%,var(--c1) 240deg,var(--c3) 0);
+  background-size: calc(1.5*var(--s)) var(--s);
+
+  background: #fafafa;
+}
+
+body {
+  color: #272727;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  margin: 1rem auto auto;
+  max-width: 800px;
+  padding-bottom: 5rem;
+  background-color: transparent
+}
+.title, h1, h2, h3, h4, h5, h6 {
+    font-family: "Press Start 2P";
+}
+
+.nes-container > .title > i.nes-logo {
+  height: 20px;
+  top: -20px;
+}
+
+.nes-container > .title > i.nes-icon.coin,
+.nes-container > .title > i.nes-icon.close{
+  height: 16px;
+  top: 0;
+  margin-top: -16px;
+}
+
+.scoreitem-img {
+  max-width: 25%;
+  max-height: 100%;
+}
+dd > * {
+  margin: 0;
+  padding: 0;
+}
+input, button, label {
+  cursor: pointer;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+[data-filter-text="false"],
+[data-filter-date="false"] {
+  display: none;
+}
+.pixelify-sans {
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.mp0 {
+  margin: 0;
+  padding: 0;
+}
+
+.mt1 {
+  margin-top: 1rem;
+}
+
+.mr1 {
+  margin-right: 1rem;
+}
+
+.mt2 {
+  margin-top: 2rem;
+}
+
+.mb2 {
+  margin-bottom: 2rem;
+}
+
+.dib {
+  display: inline-block;
+}
+
+
+.list-simple {
+  list-style-type: none;
+}
+
+/* Scroll back to top */
+.scroll-btn {
+  position: fixed;
+  bottom: -60px;
+  right: 2rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,.6);
+  transition: all 0.3s ease;
+}
+.scroll-btn.active {
+  bottom: 25px;
+}
+.scroll-btn > span {
+  display: block;
+  transform: rotateZ(90deg);
+}
+
+.nowrap {
+ white-space: nowrap;
+}
+
+nav {
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+
+.pattern-bg,
+.pattern-bg .title
+.nes-container > .title > i.nes-icon.coin,
+.nes-container > .title > i.nes-icon.close{
+    background-color: #fafafa;
+}
+
+.pattern-triangles-md * {
+  color: #242424;
+}
+
+.color-gold {
+  color: #ebe526;
+  color: #d4c816;
+}
+
+
+.nes-container.with-title>.title {
+}
+
+/* loader - start */
+.loader {
+  margin: 0 auto;
+  padding: 6rem 0;
+  width: 20%;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
+  background:
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 50%;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+    20%{background-position:0%   0%, 50%  50%,100%  50%}
+    40%{background-position:0% 100%, 50%   0%,100%  50%}
+    60%{background-position:0%  50%, 50% 100%,100%   0%}
+    80%{background-position:0%  50%, 50%  50%,100% 100%}
+}
+/* loader - end */

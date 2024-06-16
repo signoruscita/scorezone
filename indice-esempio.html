@@ -7,31 +7,10 @@
   <title>Scorezone</title>
   <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script><!-- markdown parser-->
 
-  <style>
-    html {
-      background-color: #282828;
-      color: #e1e1e1
-    }
-    body, a {
-      color: #e1e1e1
-    }
-    img {
-      max-width: 25%;
-      max-height: 100%;
-    }
-    dd > * {
-      margin: 0;
-      padding: 0;
-    }
-    input, button, label {
-      cursor: pointer;
-    }
-    [data-filter-text="false"],
-    [data-filter-date="false"] {
-      display: none;
-    }
-  </style>
-
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet"><!-- font for nes.css-->
+  <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" /><!-- nes.css -->
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="indice-esempio.css" />
   <script>
     gsheetData = {
       debug: true,
@@ -44,30 +23,36 @@
   <title>Scorezone</title>
 </head>
 <body>
-  <section class="nes-container is-dark">
-
-    <h1>Scorezone</h1>
+  <section>
+    <h1 class="title text-center mt2 mb2 color-gold">
+      Scorezone
+      <i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>
+    </h1>
 
     <section>
-      <h2>Filtri</h2>
-      <section id="filters"></section>
-      <h2>Sfide</h2>
-      <nav></nav>
+      <div class="nes-container is-dark with-title pattern-bg">
+        <h2 class="title">
+          <i class="nes-icon close"></i>
+          Filtri
+        </h2>
+        <section id="filters"></section>
+      </div>
+
+      <div class="nes-container with-title mt2 pattern-bg">
+        <h2 class="title">
+          <i class="nes-logo"></i>
+          Sfide
+        </h2>
+        <nav></nav>
+      </div>
     </section>
 
-    <main>
-      <svg width="24" height="24"
-      style="
-          display: block;
-          color: white;
-          stroke: gold;
-          width: 20%;
-          height: 20%;
-          margin: 2rem auto;
-      "
-      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_d9Sa{transform-origin:center}.spinner_qQQY{animation:spinner_ZpfF 9s linear infinite}.spinner_pote{animation:spinner_ZpfF .75s linear infinite}@keyframes spinner_ZpfF{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"/><rect class="spinner_d9Sa spinner_qQQY" x="11" y="6" rx="1" width="2" height="7"/><rect class="spinner_d9Sa spinner_pote" x="11" y="11" rx="1" width="2" height="9"/></svg>
+    <main class="pattern-bg">
+      <div class="loader"></div>
     </main>
   </section>
+
+  <a href="#" class="nes-btn is-error scroll-btn active"><span>&lt;</span></button>
 
   <script src="js-app-indice.js"></script>
 

@@ -72,7 +72,15 @@
 
   function initIndice(scoresList, parentEl) {
     const listHtml = scoresList.map(HtmlTemplate_Sfida).join('\n');
-    const outHtml = `<h2>Risultati</h2> ${listHtml}`;
+    const outHtml = `
+      <div class="nes-container with-title mt2">
+        <h2 class="title">
+          <i class="nes-icon coin"></i>
+          Risultati
+        </h2>
+        ${listHtml}
+      </div>
+    `;
     parentEl.innerHTML = outHtml;
   }
 
@@ -98,47 +106,53 @@
 
   function HtmlTemplate_NavItem(scoreItem) {
     return `
-      <a class="nes-btn is-primary" href="#sfida-${scoreItem.id}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
-        <small>${scoreItem.titolo}</small>
+      <a class="nes-badge" href="#sfida-${scoreItem.id}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
+        <!--  <span class="is-dark">${scoreItem.pos_01_pts || 0}</span> -->
+        <span class="is-success">${scoreItem.titolo}</span>
       </a>
     `;
   }
 
   function HtmlTemplate_Sfida(scoreItem) {
     return `
-      <section class="scheda nes-container with-title is-dark" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
+      <section class="scheda" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
         <header>
           <h3 class="title" id="sfida-${scoreItem.id}">#${scoreItem['sfida n.']} ${scoreItem.titolo}</h3>
         </header>
 
-        <div>
-          <img class="img-title"
-            src="assets/webp/${scoreItem.id}-title.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
-        </div>
-
-        <div>
-          <dl>
-            <dt>sfida numero</dt>
-              <dd>${scoreItem['sfida n.']}</dd>
-            <dt>giocato</dt>
-              <dd>${Utils_dateFormater(scoreItem.data)}</dd>
-            <dt>romset</dt>
-              <dd>${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
-            <dt>regole</dt>
-              <dd>${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
-            <dt>Vincitore</dt>
-              <dd>${scoreItem.pos_01_name}</dd>
+        <div class="body">
+          <div>
+            <img class="scoreitem-img"
+              src="assets/webp/${scoreItem.id}-title.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
           </div>
-        </div>
-        <div>
-          ${HtmlTemplate_Sfida_Classifica(scoreItem)}
+
+          <div>
+            <dl>
+              <dt>sfida numero</dt>
+                <dd>${scoreItem['sfida n.']}</dd>
+              <dt>giocato</dt>
+                <dd>${Utils_dateFormater(scoreItem.data)}</dd>
+              <dt>romset</dt>
+                <dd>${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
+              <dt>regole</dt>
+                <dd>${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
+              <dt>Vincitore</dt>
+                <dd>${scoreItem.pos_01_name ?
+                    `<i class="nes-icon trophy is-small"></i> ${scoreItem.pos_01_name}`
+                    : '-n.a.-'}</dd>
+            </dl>
+          </div>
+
+          <div>
+            ${HtmlTemplate_Sfida_Classifica(scoreItem)}
+          </div>
         </div>
 
         <footer>
           <p>
-            <img class="img-additional"
+            <img class="scoreitem-img"
                 src="assets/webp/${scoreItem.id}-cover.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
-              <img class="img-additional"
+              <img class="scoreitem-img"
                 src="assets/webp/${scoreItem.id}-screen.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
           </p>
         </footer>
@@ -148,8 +162,8 @@
 
   function HtmlTemplate_Sfida_Classifica(scoreItem) {
     const positions = buildPositions(scoreItem);
-    return `<div class="nes-table-responsive">
-      <table class="nes-table is-bordered is-dark">
+    return `<div class="">
+      <table class="">
         <tbody>
           ${ positions.map((s) => HtmlTemplate_Sfida_Classifica_Giocatore(s)).join('\n')}
         </tbody>
@@ -187,13 +201,13 @@
   function HtmlTemplate_Sfida_Classifica_Giocatore(player) {
     return `
       <tr>
-        <td class="text-right">${player.pos}</td>
-        <td  class="text-right">${player.pts}</td>
+        <td class="text-right">${player.pos}&nbsp;</td>
+        <td  class="text-right">${player.pts}&nbsp;</td>
         <td>${player.name}</td>
         <td class="nowrap">
-          ${player.pos === 1 ? '<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>' : ''}
-          ${player.pos === 2 ? '<i class="nes-icon star"></i>&nbsp;<i class="nes-icon star"></i>' : ''}
-          ${player.pos === 3 ? '<i class="nes-icon star"></i>' : ''}
+          ${player.pos === 1 ? '': ''}
+          ${player.pos === 2 ? '' : ''}
+          ${player.pos === 3 ? '' : ''}
         </td>
       </tr>
     `;
@@ -204,29 +218,48 @@
     dateKeys.sort().reverse();
 
     return `
-      <h3>Ricerca</h3>
-      <p>
-        <input type="search" id="search" placeholder="Ricerca ovunque..." onchange="onSearchFilter(this, event);">
-        <button onclick="onSearchFilter(document.getElementById('search'), event);">Cerca</button>
-      </p>
+      <h3 class="title">Ricerca per testo</h3>
 
-      <h3>Filtra per anno</h3>
-      <ul>
+      <div class="nes-field is-inline">
+        <input
+          class="nes-input is-dark mr1"
+          id="search"
+          onchange="onSearchFilter(this, event);"
+          placeholder="ricerca in titoli, giocatori, date, ovunque..."
+          type="search"
+          >
+        <div>
+          <label for="search" style="flex-grow: 2; text-align: left;">
+            <span class="nes-btn">
+              <img
+                src="assets/search.png"
+                width="16"
+                height="16"
+                class="dib"
+                style="vertical-align: -3px;"
+                />
+              Cerca
+            </span>&nbsp;
+          </label>
+          <span class="nes-text is-small" onclick="Utils_syncFilter();">&times;Reset</span>
+        </div>
+      </div>
+
+      <h3 class="mt1 title">Filtra per anno</h3>
+      <ul class="mp0 dib list-simple">
         ${dateKeys.map((key, index) => {
           const year = key;
           const scores = filters.date[key].length;
           const filterValue = `[${CONST.attrs.dataFilter}="${year}"]`;
           return `
-            <li>
+            <li class="mp0 mr1 dib list-simple">
               <label>
                 <input
-                  ${index == 0 ? 'checked' : ''}
+                  class="nes-checkbox is-dark"
+                  name="filter-date" value="${encodeURIComponent(filterValue)}" ${index == 0 ? 'checked' : ''}
                   onChange="onchangeFilterDate(this, event);"
                   type="checkbox"
-                  name="filter-date" value="${encodeURIComponent(filterValue)}" ${index == 0 ? 'checked' : ''}
-                  />
-                ${year} (${scores})
-              </label>
+                  /><span>${year} (${scores})</span></label>
             </li>
           `
         }).join('\n')}
