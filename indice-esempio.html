@@ -5,40 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Scorezone</title>
-
   <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script><!-- markdown parser-->
-
-
-  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-  <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/pattern.css">
 
   <style>
     html {
       background-color: #282828;
+      color: #e1e1e1
     }
-    html, body, pre, code, kbd, samp {
-      font-family: 'Press Start 2P', Courier, monospace;
+    body, a {
+      color: #e1e1e1
     }
-    .text-right {
-      text-align: right;
+    img {
+      max-width: 25%;
+      max-height: 100%;
     }
-    .nowrap {
-      white-space: nowrap;
+    dd > * {
+      margin: 0;
+      padding: 0;
     }
-    .scheda {
-      margin-top: 2rem !important;
-      overflow-wrap: break-word
+    input, button, label {
+      cursor: pointer;
     }
-    .scheda .img-title {
-      display: inline-block;
-      height: 6rem; margin: 0.5rem;
-      image-rendering: pixelated;
-    }
-    .scheda .img-additional {
-      display: inline-block;
-      height: 10rem; margin: 0.5rem;
-      image-rendering: pixelated;
+    [data-filter-text="false"],
+    [data-filter-date="false"] {
+      display: none;
     }
   </style>
 
@@ -58,9 +48,12 @@
 
     <h1>Scorezone</h1>
 
-    <nav></nav>
-
-    <progress class="nes-progress is-pattern" value="100" max="100"></progress>
+    <section>
+      <h2>Filtri</h2>
+      <section id="filters"></section>
+      <h2>Sfide</h2>
+      <nav></nav>
+    </section>
 
     <main>
       <svg width="24" height="24"
@@ -77,5 +70,6 @@
   </section>
 
   <script src="js-app-indice.js"></script>
+
 </body>
 </html>
