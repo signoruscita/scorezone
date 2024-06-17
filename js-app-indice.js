@@ -115,35 +115,38 @@
 
   function HtmlTemplate_Sfida(scoreItem) {
     return `
-      <section class="scheda mt2 mb2 nes-container is-rounded" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
+      <section
+        class="scheda mt2 mb2 nes-container with-title is-rounded" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}"
+        style="
+          background-image: url('assets/webp/${scoreItem.id}-cover.webp');
+          background-size: cover;
+          background-position: center;
+        "
+      >
+        <h3 class="title">
+            <small class="nes-btn is-disabled">
+              #${scoreItem['sfida n.']}
+              ${scoreItem.titolo}
+            </small>
+        </h3>
+
         <header class="text-center">
-          <h3 class="title" id="sfida-${scoreItem.id}">
-            <small>#${scoreItem['sfida n.']} ${scoreItem.titolo}</small>
-          </h3>
-          <br>
           <img class="scoreitem-img"
-            src="assets/webp/${scoreItem.id}-title.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
+            src="assets/webp/${scoreItem.id}-title.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
         </header>
 
-        <div class="body mt2 mb2" style="
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-content: flex-start;
-          justify-content: space-evenly;
-          align-items: flex-start;
-        ">
+        <div class="body mt1">
             <div>
               <dl>
-                <dt class="nes-text is-disabled">sfida numero</dt>
+                <dt class="text-light nes-text is-disabled">sfida numero</dt>
                   <dd class="nes-text is-primary">${scoreItem['sfida n.']}</dd>
-                <dt class="nes-text is-disabled">giocato</dt>
-                  <dd class="nes-text is-primary">${Utils_dateFormater(scoreItem.data)}</dd>
-                <dt class="nes-text is-disabled">romset</dt>
+                <dt class="text-light nes-text is-disabled">giocato</dt>
+                  <dd class="nes-text is-primary">${Utils_dateFormater(scoreItem.data).toLowerCase()}</dd>
+                <dt class="text-light nes-text is-disabled">romset</dt>
                   <dd class="nes-text is-primary">${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
-                <dt class="nes-text is-disabled">regole</dt>
-                  <dd class="nes-text is-primary">${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
-                <dt class="nes-text is-disabled">Vincitore</dt>
+                <dt class="text-light nes-text is-disabled">regole</dt>
+                  <dd class="nes-text is-primary regole">${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
+                <dt class="text-light nes-text is-disabled">vincitore</dt>
                   <dd class="nes-text is-primary">${scoreItem.pos_01_name ?
                       `<i class="nes-icon trophy is-small"></i> ${scoreItem.pos_01_name}`
                       : '-n.a.-'}</dd>
@@ -155,10 +158,12 @@
         </div>
 
         <footer class="text-center mt1">
-            <img class="scoreitem-img mr1"
-                src="assets/webp/${scoreItem.id}-cover.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
+            <!--
+              <img class="scoreitem-img mr1"
+                src="assets/webp/${scoreItem.id}-cover.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
+            -->
               <img class="scoreitem-img"
-                src="assets/webp/${scoreItem.id}-screen.webp" onerror="this.style.display='none'" loading="lazy" alt= " " />
+                src="assets/webp/${scoreItem.id}-screen.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
         </footer>
         <!--<progress class="nes-progress is-pattern mt2" value="100" max="100"></progress>-->
       </section>
@@ -206,8 +211,8 @@
   function HtmlTemplate_Sfida_Classifica_Giocatore(player) {
     return `
       <tr>
-        <td class="text-right nes-text is-success">${player.pos}&nbsp;</td>
-        <td  class="text-right">${player.pts}&nbsp;</td>
+        <td class="text-right nes-text is-success">${player.pos}.&nbsp;</td>
+        <td  class="text-right nes-text is-warning">${player.pts}&nbsp;</td>
         <td class="nes-text is-primary">${player.name}</td>
         <td class="nowrap">
           ${player.pos === 1 ? '': ''}
@@ -299,4 +304,9 @@ function onchangeFilterDate(el, evt) {
   const show = el.checked;
   const elements = document.querySelectorAll(`${filterValue}`);
   elements.forEach(el => { el.setAttribute(window.scorezone.attrs.filterDate, (show ? 'true' : 'false'))});
+}
+
+function onImageLoadError(el) {
+  el.style.display = 'none';
+  // console.log('img missing', el.getAttribute('src'));
 }

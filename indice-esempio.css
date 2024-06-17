@@ -172,6 +172,49 @@ nav {
   max-width: 50%;
 }
 
+
+.scheda.nes-container.with-title>.title,
+.scheda > .title {
+  background: transparent;
+  background-color: transparent;
+}
+.scheda > .title > .nes-btn {
+  opacity: 0.9;
+}
+
+.scheda > header,
+.scheda > .body,
+.scheda > footer {
+  background-color: rgba(0,0,0,.9);
+  padding: 1rem;
+
+  border: 0.1rem solid #000;
+  border-radius: 0.15rem;
+
+  box-shadow: 0.5rem 0.5rem 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.scheda > .body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.scheda > .body .regole > ul,
+.scheda > .body .regole > ul > li {
+  list-style-type: disclosure-closed;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
+.text-light {
+  font-weight: 400;
+}
+
 /* loader - start */
 .loader {
   margin: 0 auto;
