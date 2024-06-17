@@ -11,6 +11,8 @@
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap"); /* font for nes.css */
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"); /* font pixel */
 @import url("https://unpkg.com/nes.css@2.3.0/css/nes.min.css"); /* nes.css */
+@import url("https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"); /* toastify */
+
 /* @import url("https://unpkg.com/pattern.css"); patterns bg */
 
 
@@ -156,7 +158,6 @@ nav {
 }
 
 .color-gold {
-  color: #ebe526;
   color: #d4c816;
 }
 
@@ -180,6 +181,7 @@ nav {
 }
 .scheda > .title > .nes-btn {
   opacity: 0.9;
+  cursor: unset;
 }
 
 .scheda > header,
@@ -187,10 +189,8 @@ nav {
 .scheda > footer {
   background-color: rgba(0,0,0,.9);
   padding: 1rem;
-
   border: 0.1rem solid #000;
   border-radius: 0.15rem;
-
   box-shadow: 0.5rem 0.5rem 0px 0px rgba(0, 0, 0, 0.5);
 }
 
@@ -237,4 +237,6 @@ nav {
 }
 /* loader - end */
 
-
+.toast-close  {
+  color: #000
+}

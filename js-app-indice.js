@@ -6,6 +6,7 @@
   const CONST = {
     els: {
       search: function() { return document.getElementById('search')},
+      anniInput: function() { return document.querySelectorAll('#filtro-anno input[name="filter-date"]')},
     },
     css: {
       hidden: 'hidden',
@@ -14,6 +15,7 @@
       dataFilter: 'data-filter',
       filterText: 'data-filter-text',
       filterDate: 'data-filter-date',
+      sfidaId: 'sfida-{id}',
     }
   };
 
@@ -22,10 +24,8 @@
   initNav(scoresList, document.querySelector('nav'));
   initFilters(filters, document.querySelector('#filters'));
   initIndice(scoresList, document.querySelector('main'));
-
-
-
   Utils_syncFilter();
+  Utils_goToSfida(window.location.hash.substring(1));
 
   function data_download() {
     var gsheetData = window.gsheetData || {};
@@ -106,7 +106,7 @@
 
   function HtmlTemplate_NavItem(scoreItem) {
     return `
-      <a class="nes-badge" href="#sfida-${scoreItem.id}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
+      <a class="nes-badge" href="#${CONST.attrs.sfidaId.replace('{id}', scoreItem.id)}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
         <!--  <span class="is-dark">${scoreItem.pos_01_pts || 0}</span> -->
         <span class="is-success">${scoreItem.titolo}</span>
       </a>
@@ -116,6 +116,7 @@
   function HtmlTemplate_Sfida(scoreItem) {
     return `
       <section
+        id="${CONST.attrs.sfidaId.replace('{id}', scoreItem.id)}"
         class="scheda mt2 mb2 nes-container with-title is-rounded" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}"
         style="
           background-image: url('assets/webp/${scoreItem.id}-cover.webp');
@@ -124,10 +125,12 @@
         "
       >
         <h3 class="title">
-            <small class="nes-btn is-disabled">
-              #${scoreItem['sfida n.']}
-              ${scoreItem.titolo}
-            </small>
+            <a href="#${CONST.attrs.sfidaId.replace('{id}', scoreItem.id)}" onclick="Utils_onClickSfidaBtn(this)">
+              <small class="nes-btn is-normal">
+                #${scoreItem['sfida n.']}
+                ${scoreItem.titolo}
+              </small>
+            </a>
         </h3>
 
         <header class="text-center">
@@ -234,7 +237,7 @@
         <input
           class="nes-input is-dark mr1"
           id="search"
-          onchange="onSearchFilter(this, event);"
+          onchange="onSearchFilter(this.value, event);"
           placeholder="ricerca in titoli, giocatori, date, ovunque..."
           type="search"
           >
@@ -251,12 +254,12 @@
               Cerca
             </span>&nbsp;
           </label>
-          <span class="nes-text is-small" onclick="Utils_syncFilter();">&times;Reset</span>
+          <span class="nes-text is-small" onclick="Utils_syncFilter({resetHash: true});">&times;Reset</span>
         </div>
       </div>
 
       <h3 class="mt1 title">Filtra per anno</h3>
-      <ul class="mp0 dib list-simple">
+      <ul class="mp0 dib list-simple" id="filtro-anno">
         ${dateKeys.map((key, index) => {
           const year = key;
           const scores = filters.date[key].length;
@@ -276,29 +279,42 @@
     `
   }
 
+  function Utils_goToSfida(elementSfidaId) {
+    if (!elementSfidaId) return;
+    const id = `#${elementSfidaId.substring(6)}`; // sfida-187
+    window.scorezone.els.search().value = id;
+    window.scorezone.els.anniInput().forEach(el => {
+      el.checked = true
+      onchangeFilterDate(el, null);
+    });
+    onSearchFilter(id, null);
+  }
+
 })();
 
 
-function Utils_syncFilter() {
+function Utils_syncFilter({resetHash = false} = {}) {
   window.scorezone.els.search().value = '';
-  const els = document.querySelectorAll('input[name="filter-date"]');
+  const els = window.scorezone.els.anniInput();
   els.forEach(el => onchangeFilterDate(el, null));
-  onSearchFilter(window.scorezone.els.search(), null);
+  onSearchFilter(window.scorezone.els.search().value, null);
+  if (resetHash) {
+    window.location.hash = '';
+  }
 }
 
-function onSearchFilter(el, evt) {
+function onSearchFilter(value, evt) {
   evt ? evt.preventDefault() : null;
-  const filterValue = `${el.value}`.trim();
+  const filterValue = `${value}`.trim();
   const elements = document.querySelectorAll(`[${window.scorezone.attrs.dataFilter}]`);
-  elements.forEach(el => {
-    const text = el.innerText;
+  elements.forEach(currentEl => {
+    const text = currentEl.innerText;
     const show = filterValue.length == 0 || (text.toLowerCase().includes(filterValue.toLowerCase()))
-    el.setAttribute(window.scorezone.attrs.filterText, (show ? 'true' : 'false'));
+    currentEl.setAttribute(window.scorezone.attrs.filterText, (show ? 'true' : 'false'));
   });
 }
 
 function onchangeFilterDate(el, evt) {
-  // window.scorezone.els.search().value = '';
   evt ? evt.preventDefault() : null;
   const filterValue = decodeURIComponent(el.value);
   const show = el.checked;
@@ -309,4 +325,34 @@ function onchangeFilterDate(el, evt) {
 function onImageLoadError(el) {
   el.style.display = 'none';
   // console.log('img missing', el.getAttribute('src'));
+}
+
+function Utils_onClickSfidaBtn(el) {
+  var success = false;
+  try {
+    // copy to clipboard
+    var text = window.location.toString().split('#')[0] + el.getAttribute('href');
+    navigator.clipboard.writeText(text);
+    success = true;
+  } catch (e) {
+    success = false;
+    console.error('error', e);
+  }
+  if (success) {
+    Toastify({
+      text: `${el.innerText}, link copiato negli appunti`,
+      duration: 2000,
+      close: true,
+      gravity: "bottom", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background: "#d4c816",
+        color: "#000",
+      },
+      onClick: function(){
+        console.log('tapped');
+      }
+    }).showToast();
+  }
 }
