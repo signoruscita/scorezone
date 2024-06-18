@@ -3,6 +3,8 @@
 
 ## Immagini
 
+Tool per ridimensionare: https://imageresizer.com/bulk-resize, altezza 600px, formato webp
+
 <details>
   <summary>mancanti</summary>
   <ul>
