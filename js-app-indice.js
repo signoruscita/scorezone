@@ -48,20 +48,21 @@
         '*': [...rawScoresList],
       },
     }
-    const scoresList = rawScoresList.sort((a, b) => {
-      let y = 'unknown';
+    rawScoresList.sort((a, b) => {
+      if (a.id >= b.id) return -1;
+      return 1;
+    });
+    rawScoresList.forEach((a ) => {
+      var y = 'unknown';
       try {
-        const dateA = new Date(a.data)
-        y = dateA.getFullYear();
+        y = new Date(a.data).getFullYear();
       } catch(e) {
-        // ok
+        // ok, assign unknown
       }
       filters.date[y] = filters.date[y] || [];
       filters.date[y].push(a);
-      if (a.id >= b.id) return -1;
-      return 1;
     })
-    return {scoresList, filters};
+    return {scoresList: rawScoresList, filters};
   }
 
   function initNav(scoresList, parentEl) {
