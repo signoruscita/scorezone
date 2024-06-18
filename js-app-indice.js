@@ -44,7 +44,9 @@
 
   function data_setup(rawScoresList) {
     const filters = {
-      date: {},
+      date: {
+        '*': [...rawScoresList],
+      },
     }
     const scoresList = rawScoresList.sort((a, b) => {
       let y = 'unknown';
@@ -87,22 +89,6 @@
   function initFilters(filters, parentEl) {
     parentEl.innerHTML = `${HtmlTemplate_Filters(filters)}`;
   };
-
-  function Utils_dateFormater(date) {
-    if (!date) { return '' }
-    try {
-      const event = new Date(date);
-      const options = {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      };
-      return event.toLocaleDateString(undefined, options);
-    } catch (e) {
-      return date;
-    }
-  }
 
   function HtmlTemplate_NavItem(scoreItem) {
     return `
@@ -261,18 +247,20 @@
       <h3 class="mt1 title">Filtra per anno</h3>
       <ul class="mp0 dib list-simple" id="filtro-anno">
         ${dateKeys.map((key, index) => {
-          const year = key;
+          const filterLabel = key === '*' ? 'tutti' : key;
           const scores = filters.date[key].length;
-          const filterValue = `[${CONST.attrs.dataFilter}="${year}"]`;
+          const filterValue = `[${CONST.attrs.dataFilter}${key === '*' ? '' : `="${key}"`}]`;
           return `
             <li class="mp0 mr1 dib list-simple">
               <label>
                 <input
                   class="nes-checkbox is-dark"
-                  name="filter-date" value="${encodeURIComponent(filterValue)}" ${index == 0 ? 'checked' : ''}
+                  name="filter-date"
+                  value="${encodeURIComponent(filterValue)}"
+                  ${key === '*' ? 'checked' : ''}
                   onChange="onchangeFilterDate(this, event);"
-                  type="checkbox"
-                  /><span>${year} (${scores})</span></label>
+                  type="radio"
+                /><span>${filterLabel} (${scores})</span></label>
             </li>
           `
         }).join('\n')}
@@ -288,6 +276,22 @@
       onchangeFilterDate(el, null);
     });
     onSearchFilter(id, null);
+  }
+
+  function Utils_dateFormater(date) {
+    if (!date) { return '' }
+    try {
+      const event = new Date(date);
+      const options = {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      };
+      return event.toLocaleDateString(undefined, options);
+    } catch (e) {
+      return date;
+    }
   }
 
 })();
@@ -319,6 +323,7 @@ function onchangeFilterDate(el, evt) {
   const filterValue = decodeURIComponent(el.value);
   const show = el.checked;
   const elements = document.querySelectorAll(`${filterValue}`);
+  document.querySelectorAll(`[${window.scorezone.attrs.dataFilter}]`).forEach(el => el.setAttribute(window.scorezone.attrs.filterDate, 'false'));
   elements.forEach(el => { el.setAttribute(window.scorezone.attrs.filterDate, (show ? 'true' : 'false'))});
 }
 
