@@ -76,6 +76,12 @@ input, button, label {
   text-align: center;
 }
 
+/* fix overflow */
+[data-filter]>span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 [data-filter-text="false"],
 [data-filter-date="false"] {
   display: none;
@@ -161,6 +167,10 @@ nav {
   color: #d4c816;
 }
 
+.scheda {
+  margin-left: -2rem !important;
+  margin-right: -2rem !important;
+}
 
 .scheda footer .scoreitem-img {
   height: 20vh;

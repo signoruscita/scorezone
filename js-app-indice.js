@@ -147,14 +147,9 @@
         </div>
 
         <footer class="text-center mt1">
-            <!--
-              <img class="scoreitem-img mr1"
-                src="assets/webp/${scoreItem.id}-cover.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
-            -->
-              <img class="scoreitem-img"
-                src="assets/webp/${scoreItem.id}-screen.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
+          <img class="scoreitem-img"
+            src="assets/webp/${scoreItem.id}-screen.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
         </footer>
-        <!--<progress class="nes-progress is-pattern mt2" value="100" max="100"></progress>-->
       </section>
     `
   }
@@ -258,7 +253,7 @@
                   name="filter-date"
                   value="${encodeURIComponent(filterValue)}"
                   ${key === '*' ? 'checked' : ''}
-                  onChange="onchangeFilterDate(this, event);"
+                  onChange="onChangeFilterDate(this, event);"
                   type="radio"
                 /><span>${filterLabel} (${scores})</span></label>
             </li>
@@ -273,7 +268,7 @@
     window.scorezone.els.search().value = id;
     window.scorezone.els.anniInput().forEach(el => {
       el.checked = true
-      onchangeFilterDate(el, null);
+      onChangeFilterDate(el, null);
     });
     onSearchFilter(id, null);
   }
@@ -300,7 +295,7 @@
 function Utils_syncFilter({resetHash = false} = {}) {
   window.scorezone.els.search().value = '';
   const els = window.scorezone.els.anniInput();
-  els.forEach(el => onchangeFilterDate(el, null));
+  els.forEach(el => onChangeFilterDate(el, null));
   onSearchFilter(window.scorezone.els.search().value, null);
   if (resetHash) {
     window.location.hash = '';
@@ -318,7 +313,7 @@ function onSearchFilter(value, evt) {
   });
 }
 
-function onchangeFilterDate(el, evt) {
+function onChangeFilterDate(el, evt) {
   evt ? evt.preventDefault() : null;
   const filterValue = decodeURIComponent(el.value);
   const show = el.checked;
