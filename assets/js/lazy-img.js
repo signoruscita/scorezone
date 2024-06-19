@@ -1,9 +1,9 @@
 function lazyLoadImages(paramlazyClass = 'lazybg') {
-  document.addEventListener("DOMContentLoaded", () => {
+  // document.addEventListener("DOMContentLoaded", () => {
     var lazyloadImages;
     var lazyCssClassName = paramlazyClass;
     var lazyCssClassSelector = "." + lazyCssClassName;
-    // console.log("lazyLoadImages => ", lazyCssClassSelector);
+
     lazyloadImages = document.querySelectorAll(lazyCssClassSelector);
     if ("IntersectionObserver" in window) {
       var imageObserver = new IntersectionObserver(function (entries, observer) {
@@ -48,5 +48,5 @@ function lazyLoadImages(paramlazyClass = 'lazybg') {
       window.addEventListener("resize", lazyload);
       window.addEventListener("orientationChange", lazyload);
     }
-  });
+  // });
 }

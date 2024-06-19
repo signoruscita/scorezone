@@ -27,10 +27,7 @@
   initIndice(scoresList, document.querySelector('main'));
   Utils_syncFilter();
   Utils_goToSfida(window.location.hash.substring(1));
-
-  setTimeout(() => {
-    lazyLoadImages ? lazyLoadImages(CONST.css.lazybg) : null;
-  },10);
+  Utils_lazyLoadImages();
 
   function data_download() {
     var gsheetData = window.gsheetData || {};
@@ -294,6 +291,14 @@
     }
   }
 
+  function Utils_lazyLoadImages() {
+    setTimeout(() => {
+      // from lazy-img.js
+      lazyLoadImages ? lazyLoadImages(CONST.css.lazybg) : null;
+    }, 10);
+  }
+
+
 })();
 
 
@@ -355,9 +360,7 @@ function Utils_onClickSfidaBtn(el) {
         background: "#d4c816",
         color: "#000",
       },
-      onClick: function(){
-        console.log('tapped');
-      }
+      // onClick: function(){ }
     }).showToast();
   }
 }
