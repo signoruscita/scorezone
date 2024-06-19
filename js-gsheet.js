@@ -30,7 +30,7 @@
   function downloadLocalStorage({ cacheKey }) {
     return new Promise((resolve, _reject) => {
       try {
-        // log('downloadLocalStorage', cacheKey);
+        log('downloadLocalStorage', cacheKey);
         var value = JSON.parse(localStorage.getItem(cacheKey));
         if (value) {
           var now = new Date().getTime();
@@ -56,7 +56,7 @@
   function downloadFromNet({ documentId, sheetName }) {
     return new Promise(function (resolve, _reject) {
       var handlerName = `gdoc_h_${Math.random()}`.replace(/[^a-z0-9_]/ig, '');
-      // log('handlerName', handlerName);
+      log('handlerName', handlerName);
       window[handlerName] = (response) => {
         const map = normalizeSheetData({ json: response, documentId, sheetName });
         resolve(map);
@@ -68,29 +68,29 @@
       var id = documentId;
       var sheet = sheetName
       var tqUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?sheet=${sheet}&tqx=responseHandler:${handlerName}`;
-      // log('tqUrl', tqUrl);
+      log('tqUrl', tqUrl);
       injectScript(tqUrl);
     });
   }
 
   function normalizeSheetData({ json }) {
-    // log('normalizeSheetData', json);
+    log('normalizeSheetData', json);
     var data = [];
     json.table.rows.forEach((row, rowIndex) => {
-      // log('row', rowIndex, row);
+      log('row', rowIndex, row);
       const values = row.c;
       const obj = {};
-      // log('row values init', rowIndex, values, obj);
+      log('row values init', rowIndex, values, obj);
       values.forEach((cell, index) => {
         const colname = getColName(json, index);
         const value = (cell && cell.v) || null;
         const type = getColType(json, index);
         const pattern = getColPattern(json, index);
         obj[colname] = getColValue(value, type, pattern);
-        // log('cell', index, colname, value);
+        log('cell', index, colname, value);
       });
       data.push(obj);
-      // log('row values done', rowIndex, obj);
+      log('row values done', rowIndex, obj);
     });
     log('data normalised', data);
     return data;
@@ -98,24 +98,24 @@
   function getColName(json, index) {
     const col = json.table.cols[index];
     const colname = `${col.label || col.id || index}`.trim();
-    // log('getColName', index, col);
+    log('getColName', index, col);
     return colname;
   }
   function getColType(json, index) {
     const col = json.table.cols[index];
     const coltype = col.type || 'string';
-    // log('getColType', index, col);
+    log('getColType', index, col);
     return coltype;
   }
   function getColPattern(json, index) {
     const col = json.table.cols[index];
     const colpattern = col.pattern || null;
-    // log('getColPattern', index, col);
+    log('getColPattern', index, col);
     return colpattern;
   }
 
   function getColValue(value, type, _pattern) {
-    // log('getColValue', value, type);
+    log('getColValue', value, type);
     if (type === 'number') {
       return Number(value);
     }
@@ -125,7 +125,7 @@
         const [y, m, d] = temp.split(',');
         return new Date(y, m, d);
       } catch (e) {
-        // log('getColValue', 'error cannot parse date', {value, type, pattern}, e);
+        log('getColValue', 'error cannot parse date', {value, type, pattern}, e);
         return value;
       }
     }

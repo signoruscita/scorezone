@@ -3,7 +3,7 @@ function lazyLoadImages(paramlazyClass = 'lazybg') {
     var lazyloadImages;
     var lazyCssClassName = paramlazyClass;
     var lazyCssClassSelector = "." + lazyCssClassName;
-    console.log("lazyLoadImages => ", lazyCssClassSelector);
+    // console.log("lazyLoadImages => ", lazyCssClassSelector);
     lazyloadImages = document.querySelectorAll(lazyCssClassSelector);
     if ("IntersectionObserver" in window) {
       var imageObserver = new IntersectionObserver(function (entries, observer) {
