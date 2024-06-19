@@ -10,6 +10,7 @@
     },
     css: {
       hidden: 'hidden',
+      lazybg: 'lazybg',
     },
     attrs: {
       dataFilter: 'data-filter',
@@ -26,6 +27,10 @@
   initIndice(scoresList, document.querySelector('main'));
   Utils_syncFilter();
   Utils_goToSfida(window.location.hash.substring(1));
+
+  setTimeout(() => {
+    lazyLoadImages ? lazyLoadImages(CONST.css.lazybg) : null;
+  },10);
 
   function data_download() {
     var gsheetData = window.gsheetData || {};
@@ -94,7 +99,6 @@
   function HtmlTemplate_NavItem(scoreItem) {
     return `
       <a class="nes-badge" href="#${CONST.attrs.sfidaId.replace('{id}', scoreItem.id)}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}">
-        <!--  <span class="is-dark">${scoreItem.pos_01_pts || 0}</span> -->
         <span class="is-success">${scoreItem.titolo}</span>
       </a>
     `;
@@ -104,7 +108,7 @@
     return `
       <section
         id="${CONST.attrs.sfidaId.replace('{id}', scoreItem.id)}"
-        class="scheda mt2 mb2 nes-container with-title is-rounded" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}"
+        class="scheda mt2 mb2 nes-container with-title is-rounded ${CONST.css.lazybg}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}"
         style="
           background-image: url('assets/webp/${scoreItem.id}-cover.webp');
           background-size: cover;

@@ -1,4 +1,8 @@
 
+.lazybg {
+  background-image: none !important;
+}
+
 html {
   --s: 101px; /* control the size*/
   --c1: #2e2e2e;

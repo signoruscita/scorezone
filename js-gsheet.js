@@ -1,5 +1,4 @@
 (function init() {
-  log('init');
   injectScript('https://apis.google.com/js/auth.js?onload=init');
 
   window.gsheetjs = { downloadSheet };
@@ -31,7 +30,7 @@
   function downloadLocalStorage({ cacheKey }) {
     return new Promise((resolve, _reject) => {
       try {
-        log('downloadLocalStorage', cacheKey);
+        // log('downloadLocalStorage', cacheKey);
         var value = JSON.parse(localStorage.getItem(cacheKey));
         if (value) {
           var now = new Date().getTime();
