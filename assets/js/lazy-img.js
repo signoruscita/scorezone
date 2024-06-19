@@ -1,5 +1,5 @@
 function lazyLoadImages(paramlazyClass = 'lazybg') {
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", () => {
     var lazyloadImages;
     var lazyCssClassName = paramlazyClass;
     var lazyCssClassSelector = "." + lazyCssClassName;
