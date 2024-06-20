@@ -8,7 +8,6 @@ Tool per ridimensionare: https://imageresizer.com/bulk-resize, altezza 600px, fo
 <details>
   <summary>mancanti</summary>
   <ul>
-  <li>100-cover.png</li>
   <li>102-cover.png</li>
   <li>103-cover.png</li>
   <li>105-cover.png</li>
