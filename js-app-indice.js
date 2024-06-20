@@ -17,6 +17,10 @@
       filterText: 'data-filter-text',
       filterDate: 'data-filter-date',
       sfidaId: 'sfida-{id}',
+    },
+    testi: {
+      indice_titolo_risultati: 'Risultati',
+      scheda_regole_valore_default: 'default settings'
     }
   };
 
@@ -81,7 +85,7 @@
       <div class="nes-container with-title mt2">
         <h2 class="title">
           <i class="nes-icon coin"></i>
-          Risultati
+          ${CONST.testi.indice_titolo_risultati}
         </h2>
         ${listHtml}
       </div>
@@ -136,7 +140,7 @@
                 <dt class="text-light nes-text is-disabled">romset</dt>
                   <dd class="nes-text is-primary">${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
                 <dt class="text-light nes-text is-disabled">regole</dt>
-                  <dd class="nes-text is-primary regole">${converter.makeHtml(scoreItem.regole || 'tutto consentito')}</dd>
+                  <dd class="nes-text is-primary regole">${converter.makeHtml(scoreItem.regole || CONST.testi.scheda_regole_valore_default)}</dd>
                 <dt class="text-light nes-text is-disabled">vincitore</dt>
                   <dd class="nes-text is-primary">${scoreItem.pos_01_name ?
                       `<i class="nes-icon trophy is-small"></i> ${scoreItem.pos_01_name}`
