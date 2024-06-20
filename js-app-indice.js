@@ -20,7 +20,33 @@
     },
     testi: {
       indice_titolo_risultati: 'Risultati',
-      scheda_regole_valore_default: 'default settings'
+
+      scheda_sfidanum_etichetta: 'sfida numero',
+      scheda_sfidanum_valore_default: '??',
+
+      scheda_data_etichetta: 'giocato',
+      scheda_data_valore_default: '??',
+
+      scheda_romset_etichetta: 'romset',
+      scheda_romset_valore_default: 'sconosciuto',
+
+      scheda_regole_etichetta: 'regole',
+      scheda_regole_valore_default: 'default settings',
+
+      scheda_vincitore_etichetta: 'vincitore',
+      scheda_vincitore_valore_default: '-n.a.-',
+
+      filtri_testo_titolo: 'Ricerca per testo',
+      filtri_testo_suggerimento: 'ricerca in titoli, giocatori, date, ovunque...',
+
+      filtri_testo_bottone_cerca: 'Cerca',
+      filtri_testo_bottone_reset: 'Reset',
+
+      filtri_anno_titolo: 'Filtra per anno',
+      filtri_anno_etichetta_tutti: 'tutti',
+
+      toast_copiato: 'link copiato negli appunti',
+
     }
   };
 
@@ -133,18 +159,18 @@
         <div class="body mt1">
             <div>
               <dl>
-                <dt class="text-light nes-text is-disabled">sfida numero</dt>
-                  <dd class="nes-text is-primary">${scoreItem['sfida n.']}</dd>
-                <dt class="text-light nes-text is-disabled">giocato</dt>
-                  <dd class="nes-text is-primary">${Utils_dateFormater(scoreItem.data).toLowerCase()}</dd>
-                <dt class="text-light nes-text is-disabled">romset</dt>
-                  <dd class="nes-text is-primary">${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : 'sconosciuto'}</dd>
-                <dt class="text-light nes-text is-disabled">regole</dt>
+                <dt class="text-light nes-text is-disabled">${CONST.testi.scheda_sfidanum_etichetta}</dt>
+                  <dd class="nes-text is-primary">${scoreItem['sfida n.'] || CONST.testi.scheda_sfidanum_valore_default}</dd>
+                <dt class="text-light nes-text is-disabled">${CONST.testi.scheda_data_etichetta}</dt>
+                  <dd class="nes-text is-primary">${Utils_dateFormater(scoreItem.data).toLowerCase() || CONST.testi.scheda_data_valore_default}</dd>
+                <dt class="text-light nes-text is-disabled">${CONST.testi.scheda_romset_etichetta}</dt>
+                  <dd class="nes-text is-primary">${scoreItem.romset ? converter.makeHtml(scoreItem.romset) : CONST.testi.scheda_romset_valore_default}</dd>
+                <dt class="text-light nes-text is-disabled">${CONST.testi.scheda_regole_etichetta}</dt>
                   <dd class="nes-text is-primary regole">${converter.makeHtml(scoreItem.regole || CONST.testi.scheda_regole_valore_default)}</dd>
-                <dt class="text-light nes-text is-disabled">vincitore</dt>
+                <dt class="text-light nes-text is-disabled">${CONST.testi.scheda_vincitore_etichetta}</dt>
                   <dd class="nes-text is-primary">${scoreItem.pos_01_name ?
                       `<i class="nes-icon trophy is-small"></i> ${scoreItem.pos_01_name}`
-                      : '-n.a.-'}</dd>
+                      : CONST.testi.scheda_vincitore_valore_default}</dd>
               </dl>
             </div>
             <div>
@@ -218,14 +244,14 @@
     dateKeys.sort().reverse();
 
     return `
-      <h3 class="title">Ricerca per testo</h3>
+      <h3 class="title">${CONST.testi.filtri_testo_titolo}</h3>
 
       <div class="nes-field is-inline">
         <input
           class="nes-input is-dark mr1"
           id="search"
           onchange="onSearchFilter(this.value, event);"
-          placeholder="ricerca in titoli, giocatori, date, ovunque..."
+          placeholder="${CONST.testi.filtri_testo_suggerimento}"
           type="search"
           >
         <div>
@@ -238,17 +264,17 @@
                 class="dib"
                 style="vertical-align: -3px;"
                 />
-              Cerca
+              ${CONST.testi.filtri_testo_bottone_cerca}
             </span>&nbsp;
           </label>
-          <span class="nes-text is-small" onclick="Utils_syncFilter({resetHash: true});">&times;Reset</span>
+          <span class="nes-text is-small" onclick="Utils_syncFilter({resetHash: true});">&times;${CONST.testi.filtri_testo_bottone_reset}</span>
         </div>
       </div>
 
-      <h3 class="mt1 title">Filtra per anno</h3>
+      <h3 class="mt1 title">${CONST.testi.filtri_anno_titolo}</h3>
       <ul class="mp0 dib list-simple" id="filtro-anno">
-        ${dateKeys.map((key, index) => {
-          const filterLabel = key === '*' ? 'tutti' : key;
+        ${dateKeys.map((key) => {
+          const filterLabel = key === '*' ? CONST.testi.filtri_anno_etichetta_tutti : key;
           const scores = filters.date[key].length;
           const filterValue = `[${CONST.attrs.dataFilter}${key === '*' ? '' : `="${key}"`}]`;
           return `
@@ -354,7 +380,7 @@ function Utils_onClickSfidaBtn(el) {
   }
   if (success) {
     Toastify({
-      text: `${el.innerText}, link copiato negli appunti`,
+      text: window.scorezone.testi.toast_copiato,
       duration: 2000,
       close: true,
       gravity: "bottom", // `top` or `bottom`
