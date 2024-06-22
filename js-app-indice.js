@@ -7,6 +7,10 @@
     els: {
       search: function() { return document.getElementById('search')},
       anniInput: function() { return document.querySelectorAll('#filtro-anno input[name="filter-date"]')},
+      nav: function() { return document.querySelector('nav')},
+      filters: function() { return document.querySelector('#filters')},
+      indice: function() { return document.querySelector('main')},
+      stats: function() { return document.querySelector('#stats')},
     },
     css: {
       hidden: 'hidden',
@@ -52,9 +56,10 @@
 
   window.scorezone = CONST;
 
-  initNav(scoresList, document.querySelector('nav'));
-  initFilters(filters, document.querySelector('#filters'));
-  initIndice(scoresList, document.querySelector('main'));
+  initNav(scoresList, CONST.els.nav());
+  initFilters(filters, CONST.els.filters());
+  initIndice(scoresList, CONST.els.indice());
+  initStats(scoresList, CONST.els.stats());
   Utils_syncFilter();
   Utils_goToSfida(window.location.hash.substring(1));
   Utils_lazyLoadImages();
@@ -122,6 +127,78 @@
   function initFilters(filters, parentEl) {
     parentEl.innerHTML = `${HtmlTemplate_Filters(filters)}`;
   };
+
+  function initStats(scoresList, parentEl) {
+    const totalSfide = scoresList.length;
+    const giocatori = scoresList.reduce((acc, score) => {
+      for (var i = 1; i < 16; i++) {
+        var indice = i < 10 ? `0${i}` : i;
+        var key = `pos_${indice}_name`;
+        var name = score[key];
+        if (!name) { return acc; };
+        [`(Beginner)`,
+          `(CHARIOT)`,
+          `(DON'T PULL)`,
+          `(Expert)`,
+          `(Fuori Gara)`,
+          `(Fuori gara)`,
+          `(MIDNIGHT WANDERERS)`,
+          `(Money Left)`,
+          `(Score)`,
+          `(Special)`,
+          `(fuori gara)`,
+          `(fuori gara, bug mode)`,].forEach((n) => { name = name.replace(`${n} `, '')})
+        acc[name] = acc[name] || 0; acc[name] = acc[name]+1;
+      }
+      return acc;
+    }, {})
+    const totalGiocatori = Object.keys(giocatori).length;
+    const totalAnni = new Set(scoresList.map((s) => new Date(s.data).getFullYear()).filter((n) => !!n)).size;
+    const outHtml = `
+      <div class="nes-container with-title mt2">
+        <h2 class="title">
+          <i class="nes-icon trophy"></i>
+          Statistiche
+        </h2>
+        <dl>
+          <dt class="text-light nes-text is-disabled">sfide</dt>
+            <dd class="nes-text is-primary">${totalSfide}</dd>
+          <dt class="text-light nes-text is-disabled">anni</dt>
+            <dd class="nes-text is-primary">${totalAnni}</dd>
+          <dt class="text-light nes-text is-disabled">giocatori</dt>
+            <dd class="nes-text is-primary">
+              <details>
+                <summary class="nes-btn is-primary">
+                  ${totalGiocatori}
+                </summary>
+                <table class="nes-table is-bordered is-dark w100">
+                  <thead>
+                    <tr>
+                      <th>partecipazioni</th>
+                      <th>giocatore</th>
+                      <th>% partecipazione</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  ${Object.keys(giocatori).sort((a, b) => {
+                    if (a.toLowerCase() >= b.toLowerCase()) return 1;
+                    return -1
+                  }).map((nome) => {
+                    var partecipazioni = giocatori[nome];
+                    return `<tr>
+                      <td>${partecipazioni}</td>
+                      <td>${nome}</td>
+                      <td><progress class="nes-progress is-pattern" value="${partecipazioni}" max="${totalSfide}"></progress></td>
+                  <tr>`}).join('\n')}
+                  </tbody>
+                </table>
+              </details>
+            </dd>
+        </dl>
+      </div>
+    `;
+    parentEl.innerHTML = outHtml;
+  }
 
   function HtmlTemplate_NavItem(scoreItem) {
     return `

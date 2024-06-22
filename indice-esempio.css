@@ -107,6 +107,9 @@ input, button, label {
   display: inline-block;
 }
 
+.w100 {
+  width: 100%;
+}
 
 .list-simple {
   list-style-type: none;
