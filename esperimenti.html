@@ -35,6 +35,19 @@
       width: 100%;
       overflow: hidden
     }
+    body {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media screen and (min-width: 500px) {
+      .card-container {
+        justify-content: space-between;
+      }
+      .card-container > * {
+        width: calc(50% - var(--margin));
+      }
+    }
   </style>
 </head>
 <body>
