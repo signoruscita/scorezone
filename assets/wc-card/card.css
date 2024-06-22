@@ -1,0 +1,75 @@
+:host {
+  --card-primary-color: black;
+  --card-primary-color: var(--primary-color);
+
+  --card-primary-color-text: white;
+  --card-primary-color-text: var(--primary-color-text);
+
+  --card-padding: 0.5rem;
+  --card-padding: var(--padding);
+
+  --card-margin: 0.5rem;
+  --card-margin: var(--margin);
+  box-sizing: border-box;
+}
+:host * {
+  box-sizing: border-box;
+}
+
+.ratio {
+  width: 100%;
+  position: relative;
+  display: block;
+}
+
+.ratio:before {
+    content: '';
+    display: block;
+    padding-top: calc(100% / calc(var(--r)));
+}
+
+.ratio>*:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.card {
+  font-family: 'Press Start 2P', cursive;
+  background-color: var(--card-primary-color);
+  color: var(--card-primary-color-text);
+  border: 1px solid var(--card-primary-color);
+  border-radius: 4px;
+  padding: var(--card-padding);
+  margin: var(--card-margin);
+  box-shadow: calc(var(--card-padding)/3) calc(var(--card-padding)/3) calc(var(--card-padding)/5) calc(var(--card-padding)/5) black
+
+}
+.cover {
+  margin-top: calc(-1 * var(--card-padding));
+  margin-left: calc(-1 * var(--card-padding));
+  margin-right: calc(-1 * var(--card-padding));
+  margin-bottom: var(--card-padding);
+  width: auto;
+  --s: 101px; /* control the size*/
+  --c1: #2e2e2e;
+  --c2: #821719;
+  --c3: #9c9cc9;
+  --a:from -30deg at;
+  background:
+    linear-gradient(#0000 50%,#0004 0),
+    conic-gradient(var(--a) 90%,var(--c1) 240deg,#0000     0),
+    conic-gradient(var(--a) 75%,var(--c2) 240deg,#0000     0),
+    conic-gradient(var(--a) 25%,#0000     240deg,var(--c1) 0),
+    conic-gradient(var(--a) 40%,var(--c1) 240deg,var(--c3) 0);
+  background-size: calc(1.5*var(--s)) var(--s);
+}
+.cover, .cover > *:first-child {
+  border-radius: calc(var(--card-margin) * 0.1);
+}
