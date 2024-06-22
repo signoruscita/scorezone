@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>ui test</title>
+  <script>
+    webcomponent_base_path = '/assets/wc-';
+  </script>
+  <style>
+    @import 'https://fonts.googleapis.com/css?family=Press+Start+2P';
+    @import 'assets/css/reset.css';
+    :root {
+      --primary-color: #007bff;
+      --primary-color-text: #fff;
+      --font-size: 16px;
+      --font-family: 'Press Start 2P', cursive;
+      --padding: calc(var(--font-size) * 1.5);
+      --margin: calc(var(--font-size) * 1.5);
+    }
+    html {
+      font-size: var(--font-size);
+      font-family: var(--font-family);
+    }
+    .card-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .card-container > * {
+      width: 100%;
+      overflow: hidden
+    }
+  </style>
+</head>
+<body>
+
+<div class="kitchen-sink">
+  <h1>HTML5 Kitchen Sink</h1>
+  <p>This is a demonstration of various HTML5 elements and features.</p>
+  <h2>Section 1 1</h2>
+  <p>This is the content of section 1.</p>
+  <h3>Section 3</h3>
+  <button>Some button</button>
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+</div>
+
+<div class="card-container">
+
+</div>
+<script src="assets/wc-card/card.js"></script>
+<script>
+  var p = document.getElementsByClassName('card-container')[0];
+  var out = '';
+  for (var i = 1; i <= 200; i++) {
+    out = `${out}
+      <card-component
+        data-img-cover="./assets/webp/${i}-cover.webp"
+        data-img-screen="./assets/webp/${i}-screen.webp"
+        data-img-title="./assets/webp/${i}-title.webp"
+        data-title="Some Game ${i}"
+        data-id="${i}"
+        data-data="2023-04-26"
+        data-romset="cameltry">
+          <regole>
+              <i>default settings</i>
+          </regole>
+          <vincitore>${i} TheSupremacyCabinet</vincitore>
+      </card-component>
+    `;
+  }
+  p.innerHTML = out;
+</script>
+
+</body>
+</html>
