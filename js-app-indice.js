@@ -155,7 +155,7 @@
     const totalGiocatori = Object.keys(giocatori).length;
     const totalAnni = new Set(scoresList.map((s) => new Date(s.data).getFullYear()).filter((n) => !!n)).size;
     const outHtml = `
-      <div class="nes-container with-title mt2">
+      <div class="nes-container is-dark with-title mt2">
         <h2 class="title">
           <i class="nes-icon trophy"></i>
           Statistiche
