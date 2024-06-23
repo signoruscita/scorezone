@@ -240,3 +240,10 @@ nav {
 .toast-close  {
   color: #000
 }
+
+.text-mono {
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.3em;
+}

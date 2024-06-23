@@ -305,7 +305,7 @@
     return `
       <tr>
         <td class="text-right nes-text is-success">${player.pos}.&nbsp;</td>
-        <td  class="text-right nes-text is-warning">${player.pts}&nbsp;</td>
+        <td  class="text-right nes-text is-warning text-mono">${player.pts}&nbsp;</td>
         <td class="nes-text is-primary">${player.name}</td>
         <td class="nowrap">
           ${player.pos === 1 ? '': ''}
