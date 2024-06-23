@@ -49,6 +49,11 @@
       }
     }
   </style>
+  <script>
+    window.onerror = function(errorMsg, url, lineNumber) {
+      console.log('-----> mio errore: Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+    }
+  </script>
 </head>
 <body>
 
@@ -69,28 +74,41 @@
 <div class="card-container">
 
 </div>
+
 <script src="assets/wc-card/card.js"></script>
+<script src="js-gsheet.js"></script>
 <script>
-  var p = document.getElementsByClassName('card-container')[0];
-  var out = '';
-  for (var i = 1; i <= 200; i++) {
-    out = `${out}
-      <card-component
-        data-img-cover="./assets/webp/${i}-cover.webp"
-        data-img-screen="./assets/webp/${i}-screen.webp"
-        data-img-title="./assets/webp/${i}-title.webp"
-        data-title="Some Game ${i}"
-        data-id="${i}"
-        data-data="2023-04-26"
-        data-romset="cameltry">
-          <regole>
-              <i>default settings</i>
-          </regole>
-          <vincitore>${i} TheSupremacyCabinet</vincitore>
-      </card-component>
-    `;
-  }
-  p.innerHTML = out;
+  gsheetData = {
+    documentId: '1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA', // id from gsheet "shared with anyone"
+    sheetName: 'scorezone-database',
+    cache: true,
+  };
+  var doc = gsheetjs.downloadSheet({
+    documentId: gsheetData.documentId,
+    sheetName: gsheetData.sheetName,
+    cache: gsheetData.cache,
+  });
+  Promise.resolve(doc).then((data) => {
+    var out = '';
+    data.reverse().forEach((scoreItem) => {
+      var id = scoreItem['id'] + 0 < 10 ? '0' + scoreItem['id'] : scoreItem['id'];
+      out = `${out}
+        <card-component
+          data-img-cover="/assets/webp/${id}-cover.webp"
+        data-img-screen="/assets/webp/${id}-screen.webp"
+        data-img-title="/assets/webp/${id}-title.webp"
+          data-title="${scoreItem['titolo']}"
+          data-id="${scoreItem['id']}"
+          data-data="${scoreItem['data']}"
+          data-romset="${scoreItem['romset']}">
+            <regole>
+                ${scoreItem['regole']}
+            </regole>
+        </card-component>
+      `;
+    });
+    document.getElementsByClassName('card-container')[0].innerHTML = out;
+  });
 </script>
 
 </body>

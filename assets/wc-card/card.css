@@ -48,8 +48,7 @@
   border-radius: 4px;
   padding: var(--card-padding);
   margin: var(--card-margin);
-  box-shadow: calc(var(--card-padding)/3) calc(var(--card-padding)/3) calc(var(--card-padding)/5) calc(var(--card-padding)/5) black
-
+  box-shadow: calc(var(--card-padding)/3) calc(var(--card-padding)/3) calc(var(--card-padding)/5) calc(var(--card-padding)/5) black;
 }
 .cover {
   margin-top: calc(-1 * var(--card-padding));
@@ -72,4 +71,13 @@
 }
 .cover, .cover > *:first-child {
   border-radius: calc(var(--card-margin) * 0.1);
+}
+
+.card main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-position: center center;
+  background-size: cover;
 }

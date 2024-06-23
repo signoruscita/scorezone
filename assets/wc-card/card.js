@@ -19,6 +19,7 @@ class CardComponent extends HTMLElement {
     super();
     this.attachShadow({mode: 'open'});
     this.shadowRoot.innerHTML = `
+      <link rel="stylesheet" href="${webcomponent_base_path}${this.__wcname}/${this.__wcname}.css">
       <div class="card">
         <div class="ratio cover" style="--r: 4/3;">
           <img
@@ -28,12 +29,10 @@ class CardComponent extends HTMLElement {
             alt="${this.title} logo">
         </div>
         <header>${this.title}</header>
-        <p>${this.regole}</p>
+        <main style="background-image: url(${this.imgScreen});">
+          <p>${this.regole}</p>
+        </main>
       </div>
-
-      <style>
-        @import '${webcomponent_base_path}${this.__wcname}/${this.__wcname}.css';
-      </style>
     `;
   }
 }
