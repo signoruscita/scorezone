@@ -1,10 +1,16 @@
-@font-face {
+@font-face{
   font-family: "Emulogic";
-  src: url("assets/fonts/Emulogic.ttf.woff") format("woff2"),
-       url("assets/fonts/Emulogic.ttf.woff") format("woff"),
-       url("assets/fonts/Emulogic-zrEw.ttf") format("truetype");
-  font-display: swap;
+  src: url("/assets/fonts/Emulogic.eot");
+  src: url("/assets/fonts/Emulogic.iefix.eot?#iefix")format("embedded-opentype"),
+      url("/assets/fonts/Emulogic.woff")format("woff"),
+      url("/assets/fonts/Emulogic.woff2")format("woff2"),
+      url("/assets/fonts/Emulogic.ttf")format("truetype"),
+      url("/assets/fonts/Emulogic.svg#Emulogic")format("svg");
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
 }
+
 
 .lazybg {
   background-image: none !important;
