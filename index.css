@@ -1,8 +1,14 @@
+@font-face {
+  font-family: "Emulogic";
+  src: url("assets/fonts/Emulogic.ttf.woff") format("woff2"),
+       url("assets/fonts/Emulogic.ttf.woff") format("woff"),
+       url("assets/fonts/Emulogic-zrEw.ttf") format("truetype");
+  font-display: swap;
+}
 
 .lazybg {
   background-image: none !important;
 }
-
 html {
   --s: 101px; /* control the size*/
   --c1: #2e2e2e;
@@ -242,8 +248,8 @@ nav {
 }
 
 .text-mono {
-  font-family: "VT323", monospace;
+  font-family: "Emulogic", monospace;
   font-weight: 400;
   font-style: normal;
-  font-size: 1.3em;
+  font-size: 0.6em;
 }
