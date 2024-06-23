@@ -5,12 +5,13 @@
 
   const CONST = {
     els: {
-      search: function() { return document.getElementById('search')},
-      anniInput: function() { return document.querySelectorAll('#filtro-anno input[name="filter-date"]')},
-      nav: function() { return document.querySelector('nav')},
-      filters: function() { return document.querySelector('#filters')},
-      indice: function() { return document.querySelector('main')},
-      stats: function() { return document.querySelector('#stats')},
+      search: () => { return document.getElementById('search')},
+      anniInput: () => { return document.querySelectorAll('#filtro-anno input[name="filter-date"]')},
+      anniInputAll: () => { return document.querySelector('#date-all')},
+      nav: () => { return document.querySelector('nav')},
+      filters: () => { return document.querySelector('#filters')},
+      indice: () => { return document.querySelector('main')},
+      stats: () => { return document.querySelector('#stats')},
     },
     css: {
       hidden: 'hidden',
@@ -360,6 +361,7 @@
                 <input
                   class="nes-checkbox is-dark"
                   name="filter-date"
+                  ${key === '*' ? 'id="date-all"': ''}
                   value="${encodeURIComponent(filterValue)}"
                   ${key === '*' ? 'checked' : ''}
                   onChange="onChangeFilterDate(this, event);"
@@ -413,7 +415,7 @@ function Utils_syncFilter({resetHash = false} = {}) {
   window.scorezone.els.search().value = '';
   const els = window.scorezone.els.anniInput();
   els.forEach(el => onChangeFilterDate(el, null));
-  onSearchFilter(window.scorezone.els.search().value, null);
+  onSearchFilter('', null);
   if (resetHash) {
     window.location.hash = '';
   }
@@ -421,11 +423,17 @@ function Utils_syncFilter({resetHash = false} = {}) {
 
 function onSearchFilter(value, evt) {
   evt ? evt.preventDefault() : null;
-  const filterValue = `${value}`.trim();
+  const filterValue = `${value}`.trim().toLowerCase();
+  const isReset = filterValue.length == 0;
+  if (isReset) {
+    const allFilter = window.scorezone.els.anniInputAll();
+    allFilter.checked = true;
+    onChangeFilterDate(allFilter);
+  }
   const elements = document.querySelectorAll(`[${window.scorezone.attrs.dataFilter}]`);
   elements.forEach(currentEl => {
     const text = currentEl.innerText;
-    const show = filterValue.length == 0 || (text.toLowerCase().includes(filterValue.toLowerCase()))
+    const show = isReset || text.toLowerCase().includes(filterValue)
     currentEl.setAttribute(window.scorezone.attrs.filterText, (show ? 'true' : 'false'));
   });
 }
@@ -434,9 +442,21 @@ function onChangeFilterDate(el, evt) {
   evt ? evt.preventDefault() : null;
   const filterValue = decodeURIComponent(el.value);
   const show = el.checked;
-  const elements = document.querySelectorAll(`${filterValue}`);
-  document.querySelectorAll(`[${window.scorezone.attrs.dataFilter}]`).forEach(el => el.setAttribute(window.scorezone.attrs.filterDate, 'false'));
-  elements.forEach(el => { el.setAttribute(window.scorezone.attrs.filterDate, (show ? 'true' : 'false'))});
+  const newShowValue = show ? 'true' : 'false';
+
+  const selectorAll = `[${window.scorezone.attrs.dataFilter}]`;
+  const selectorCurrent = `${filterValue}`;
+  const attributeName = window.scorezone.attrs.filterDate;
+
+  // reset all
+  document.querySelectorAll(selectorAll).forEach(el => {
+    el.setAttribute(attributeName, 'false')
+  });
+
+  // elements in year
+  document.querySelectorAll(selectorCurrent).forEach(el => {
+    el.setAttribute(attributeName, newShowValue);
+  });
 }
 
 function onImageLoadError(el) {
