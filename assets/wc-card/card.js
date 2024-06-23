@@ -13,7 +13,7 @@ class CardComponent extends HTMLElement {
     return this.getAttribute('data-title');
   }
   get regole() {
-    return this.querySelector('regole').innerHTML;
+    return this.querySelector('regole').innerHTML.trim();
   }
   constructor() {
     super();
@@ -30,7 +30,9 @@ class CardComponent extends HTMLElement {
         </div>
         <header>${this.title}</header>
         <main style="background-image: url(${this.imgScreen});">
-          <p>${this.regole}</p>
+          <p>
+            ${this.regole ? this.regole : '' }
+          </p>
         </main>
       </div>
     `;

@@ -58,18 +58,54 @@
 <body>
 
 <div class="kitchen-sink">
-  <h1>HTML5 Kitchen Sink</h1>
+  <h1>Esperimenti.</h1>
   <p>This is a demonstration of various HTML5 elements and features.</p>
-  <h2>Section 1 1</h2>
-  <p>This is the content of section 1.</p>
-  <h3>Section 3</h3>
+
+  <h2>Section 2</h2>
+    <p>This is the content of section 1.</p>
+    <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+
+  <h3>Section 3 con un form.</h3>
+  <form action="#">
+    <input type="text" name="q" placeholder="ab bc cd de ef fg" />
+    <button type="submit">Search</button>
+  </form>
   <button>Some button</button>
-  <ul>
-    <li>Item 1</li>
-    <li>Item 2</li>
-    <li>Item 3</li>
-  </ul>
+  <button>Some button</button>
+  <table>
+    <tr>
+      <td>
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+        </ul>
+      </td>
+      <td>   </td>
+      <td>   </td>
+      <td>   </td>
+      <td>
+        <ol>
+          <li>Item a</li>
+          <li>Item b</li>
+          <li>Item c</li>
+        </ol>
+      </td>
+      <td>
+        colonne yeah.
+      </td>
+    </tr>
+  </table>
 </div>
+
+<h4>Section 4 con un form.</h4>
+<h6>Section 6 con un form.</h4>
+<h6>Section 6 con un form.</h4>
+<p>
+  <time>È ora!</time>
+  <small>È piccolo.</small>
+
+</p>
 
 <div class="card-container">
 
@@ -102,7 +138,7 @@
           data-data="${scoreItem['data']}"
           data-romset="${scoreItem['romset']}">
             <regole>
-                ${scoreItem['regole']}
+                ${scoreItem['regole'] ? scoreItem['regole'] : ''}
             </regole>
         </card-component>
       `;
