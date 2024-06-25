@@ -36,7 +36,7 @@
       overflow: hidden
     }
     body {
-      max-width: 800px;
+      /* max-width: 800px; */
       margin-left: auto;
       margin-right: auto;
     }
@@ -48,6 +48,80 @@
         width: calc(50% - var(--margin));
       }
     }
+
+    table {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10px;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-weight: 600;
+      display: block;
+      width: 100%;
+    }
+    th {
+      background-color: silver;
+      text-wrap: wrap !important;
+      white-space: break-spaces;
+      width: 5ch;
+      word-break: break-all;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
+    td {
+      --col0: rgb(26, 20, 0);
+      --col1: rgb(26, 20, 0);
+      --col2: rgb(77, 60, 0);
+      --col3: rgb(77, 60, 0);
+      --col4: rgb(179, 140, 0);
+      --col5: rgb(179, 140, 0);
+      --col6: rgb(255, 205, 26);
+      --col7: rgb(255, 205, 26);
+      --col8: rgb(255, 249, 229);
+      --col9: rgb(255, 249, 229);
+      --col10: rgb(255, 249, 229);
+    }
+
+    td.stats-0 {
+      background-color: var(--col0);
+    }
+    td.stats-1 {
+      background-color: var(--col1);
+    }
+    td.stats-2 {
+      background-color: var(--col2);
+    }
+    td.stats-3 {
+      background-color: var(--col3);
+    }
+    td.stats-4 {
+      background-color: var(--col4);
+    }
+    td.stats-5 {
+      background-color: var(--col5);
+    }
+    td.stats-6 {
+      background-color: var(--col6);
+    }
+    td.stats-7 {
+      background-color: var(--col7);
+    }
+    td.stats-8 {
+      background-color: var(--col8);
+    }
+    td.stats-9 {
+      background-color: var(--col9);
+    }
+    td.stats-10 {
+      background-color: var(--col10);
+    }
+    td {
+      padding: 0.5ch;
+      border: 1px solid silver;
+    }
+    .nowrap {
+      white-space: nowrap;
+    }
   </style>
   <script>
     window.onerror = function(errorMsg, url, lineNumber) {
@@ -57,59 +131,9 @@
 </head>
 <body>
 
-<div class="kitchen-sink">
-  <h1>Esperimenti.</h1>
-  <p>This is a demonstration of various HTML5 elements and features.</p>
-
-  <h2>Section 2</h2>
-    <p>This is the content of section 1.</p>
-    <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-
-  <h3>Section 3 con un form.</h3>
-  <form action="#">
-    <input type="text" name="q" placeholder="ab bc cd de ef fg" />
-    <button type="submit">Search</button>
-  </form>
-  <button>Some button</button>
-  <button>Some button</button>
-  <table>
-    <tr>
-      <td>
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>
-      </td>
-      <td>   </td>
-      <td>   </td>
-      <td>   </td>
-      <td>
-        <ol>
-          <li>Item a</li>
-          <li>Item b</li>
-          <li>Item c</li>
-        </ol>
-      </td>
-      <td>
-        colonne yeah.
-      </td>
-    </tr>
-  </table>
-</div>
-
-<h4>Section 4 con un form.</h4>
-<h6>Section 6 con un form.</h4>
-<h6>Section 6 con un form.</h4>
-<p>
-  <time>È ora!</time>
-  <small>È piccolo.</small>
-
-</p>
-
-<div class="card-container">
-
-</div>
+<div class="kitchen-sink"></div>
+<div id="stats"></div>
+<div class="card-container"></div>
 
 <script src="assets/wc-card/card.js"></script>
 <script src="js-gsheet.js"></script>
@@ -125,26 +149,182 @@
     cache: gsheetData.cache,
   });
   Promise.resolve(doc).then((data) => {
+    data.reverse();
+    // makeCard(data[0]);
+
+    var stats = calculateStats(data);
+    var giocatori = [...new Set(data.reduce((acc, i) => [...acc, ...getNames(i)], []))];
+    var pts10sGlobal = giocatori.reduce((acc, g) => {
+      acc[g] = acc[g] || 0;
+      acc[g] = acc[g] + stats.reduce((sacc, item) => {
+        sacc = sacc + (item.stats.pts10s[g] ?? 0);
+        return sacc;
+      }, 0);
+      return acc;
+    }, {});
+    giocatori.sort((a, b) => {
+      if (pts10sGlobal[a] >= pts10sGlobal[b]) { return -1; }
+      return 1;
+    })
+    console.log(stats);
+
+    var statsHtml = `
+      <table>
+        <thead>
+          <tr>
+            <th>data</th>
+            <th>titolo</th>
+            ${giocatori.map((g) => `<th>${g}</th>`).join('\n')}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>totale</td>
+            <td>
+            ${giocatori.map((g) => {
+                  return stats.reduce((acc, item) => {
+                      return acc + (item.stats.pts10s[g] ?? 0)
+                    }, 0)
+                  }).join('</td><td>')
+            }</td>
+          </tr>
+        ${stats.map((item) => {
+          var d = new Date(item.data);
+          return `
+            <tr>
+              <td class="nowrap">${d.getFullYear()}-${d.getMonth()}-${d.getDate()}</td>
+              <td class="nowrap">${item.titolo}</td>
+              ${giocatori.map((g) => `<td class="stats-${item.stats.pts10s[g] ?? 0}" title="punteggio: ${item.stats.pts[g]}">${item.stats.pts10s[g] ?? 0}</td>`).join('\n')}
+            </tr>
+          `;
+        }).join('\n')}
+        </tbody>
+      </table>
+    `;
+    document.getElementById('stats').innerHTML = statsHtml;
+  });
+
+
+  function calculateStats(scorezoneItems) {
+    var stats = [
+      ...scorezoneItems.map((item) => {
+        var pts = getPunteggi(item);
+        var names = getNames(item);
+        var max = Math.max(...pts);
+        return {
+          ...item,
+          stats: {
+            min: Math.min(...pts),
+            max: Math.max(...pts),
+            pts: pts.reduce((acc, pt, i) => {
+                var name = names[i];
+                acc[name] = pt;
+                return acc;
+            }, {}),
+            pts10s: pts.reduce((acc, pt, i) => {
+                var name = names[i];
+                acc[name] = parseInt(Number(Math.floor(Math.floor((pt / max) * 100) / 10)).toFixed(0))
+                return acc;
+            }, {}),
+            names: [
+              ...getNames(item)
+            ]
+          }
+        }
+      }),
+    ];
+    return stats;
+  }
+  function getNames(scoreItem) {
+    return [
+      scoreItem.pos_01_name,
+      scoreItem.pos_02_name,
+      scoreItem.pos_03_name,
+      scoreItem.pos_04_name,
+      scoreItem.pos_05_name,
+      scoreItem.pos_06_name,
+      scoreItem.pos_07_name,
+      scoreItem.pos_08_name,
+      scoreItem.pos_09_name,
+      scoreItem.pos_10_name,
+      scoreItem.pos_11_name,
+      scoreItem.pos_12_name,
+      scoreItem.pos_13_name,
+      scoreItem.pos_14_name,
+      scoreItem.pos_15_name,
+    ].map((n) => {
+        return [
+        "(Beginner) ",
+        "(CHARIOT) ",
+        "(DON'T PULL) ",
+        "(Expert) ",
+        "(Fuori gara) ",
+        "(MIDNIGHT WANDERERS) ",
+        "(Money Left) ",
+        "(Score) ",
+        "(Special) ",
+        "(fuori gara, bug mode) ",
+      ].reduce((acc, val) => acc.replace(val, ''), n || '')
+    })
+  }
+  function getPunteggi(scoreItem) {
+    return [
+      scoreItem.pos_01_pts,
+      scoreItem.pos_02_pts,
+      scoreItem.pos_03_pts,
+      scoreItem.pos_04_pts,
+      scoreItem.pos_05_pts,
+      scoreItem.pos_06_pts,
+      scoreItem.pos_07_pts,
+      scoreItem.pos_08_pts,
+      scoreItem.pos_09_pts,
+      scoreItem.pos_10_pts,
+      scoreItem.pos_11_pts,
+      scoreItem.pos_12_pts,
+      scoreItem.pos_13_pts,
+      scoreItem.pos_14_pts,
+      scoreItem.pos_15_pts,
+    ]
+  }
+  function average(arr) {
+    return sumAll(arr) / arr.length;
+  }
+  function sumAll(arr) {
+    return arr.reduce((acc, val) => acc + val, 0);
+  }
+  function percentile (arr, val) {
+    let count = 0;
+    arr.forEach(v => {
+      if (v < val) {
+        count++;
+      } else if (v == val) {
+        count += 0.5;
+      }
+    });
+    return 100 * count / arr.length;
+  }
+
+  function makeCard(scoreItem) {
     var out = '';
-    data.reverse().forEach((scoreItem) => {
-      var id = scoreItem['id'] + 0 < 10 ? '0' + scoreItem['id'] : scoreItem['id'];
-      out = `${out}
-        <card-component
-          data-img-cover="/assets/webp/${id}-cover.webp"
+    var id = scoreItem['id'] + 0 < 10 ? '0' + scoreItem['id'] : scoreItem['id'];
+    out = `${out}
+      <card-component
+        data-img-cover="/assets/webp/${id}-cover.webp"
         data-img-screen="/assets/webp/${id}-screen.webp"
         data-img-title="/assets/webp/${id}-title.webp"
-          data-title="${scoreItem['titolo']}"
-          data-id="${scoreItem['id']}"
-          data-data="${scoreItem['data']}"
-          data-romset="${scoreItem['romset']}">
-            <regole>
-                ${scoreItem['regole'] ? scoreItem['regole'] : ''}
-            </regole>
-        </card-component>
-      `;
-    });
+        data-title="${scoreItem['titolo']}"
+        data-id="${scoreItem['id']}"
+        data-data="${scoreItem['data']}"
+        data-romset="${scoreItem['romset']}">
+          <regole>
+              ${scoreItem['regole'] ? scoreItem['regole'] : ''}
+          </regole>
+      </card-component>
+    `;
     document.getElementsByClassName('card-container')[0].innerHTML = out;
-  });
+  };
+
 </script>
 
 </body>
