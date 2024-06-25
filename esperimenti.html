@@ -80,6 +80,13 @@
       --col8: rgb(255, 249, 229);
       --col9: rgb(255, 249, 229);
       --col10: rgb(255, 249, 229);
+      padding: 0.5ch;
+      width: 5ch;
+      max-width: 5ch;
+      overflow: hidden;
+      text-overflow: none;
+      white-space: nowrap;
+      border: 1px solid silver;
     }
 
     td.stats-0 {
@@ -115,12 +122,10 @@
     td.stats-10 {
       background-color: var(--col10);
     }
-    td {
-      padding: 0.5ch;
-      border: 1px solid silver;
-    }
-    .nowrap {
+    .td-text {
       white-space: nowrap;
+      width: 12ch;
+      max-width: 12ch;
     }
   </style>
   <script>
@@ -181,20 +186,18 @@
           <tr>
             <td></td>
             <td>totale</td>
-            <td>
-            ${giocatori.map((g) => {
+            <td>${giocatori.map((g) => {
                   return stats.reduce((acc, item) => {
                       return acc + (item.stats.pts10s[g] ?? 0)
                     }, 0)
-                  }).join('</td><td>')
-            }</td>
+                  }).join('</td><td>')}</td>
           </tr>
         ${stats.map((item) => {
           var d = new Date(item.data);
           return `
             <tr>
-              <td class="nowrap">${d.getFullYear()}-${d.getMonth()}-${d.getDate()}</td>
-              <td class="nowrap">${item.titolo}</td>
+              <td class="td-text">${d.getFullYear()}-${d.getMonth()}-${d.getDate()}</td>
+              <td class="td-text">${item.titolo}</td>
               ${giocatori.map((g) => `<td class="stats-${item.stats.pts10s[g] ?? 0}" title="punteggio: ${item.stats.pts[g]}">${item.stats.pts10s[g] ?? 0}</td>`).join('\n')}
             </tr>
           `;
