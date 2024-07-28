@@ -92,55 +92,7 @@ Tool per ridimensionare: https://imageresizer.com/bulk-resize, altezza 600px, fo
       <td>cover</td>
     </tr>
     <tr>
-      <td>25</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>26</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>27</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>28</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>29</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>30</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>31</td>
-      <td>cover</td>
-    </tr>
-    <tr>
       <td>32</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>33</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>34</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>35</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>36</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>37</td>
       <td>cover</td>
     </tr>
     <tr>
@@ -148,43 +100,11 @@ Tool per ridimensionare: https://imageresizer.com/bulk-resize, altezza 600px, fo
       <td>cover</td>
     </tr>
     <tr>
-      <td>39</td>
-      <td>cover</td>
-    </tr>
-    <tr>
       <td>40</td>
       <td>screen</td>
     </tr>
     <tr>
-      <td>41</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>42</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>43</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>44</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>45</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>46</td>
-      <td>cover</td>
-    </tr>
-    <tr>
       <td>47</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>48</td>
       <td>cover</td>
     </tr>
     <tr>
