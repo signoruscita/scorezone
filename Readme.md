@@ -188,10 +188,6 @@ Tool per ridimensionare: https://imageresizer.com/bulk-resize, altezza 600px, fo
       <td>cover</td>
     </tr>
     <tr>
-      <td>49</td>
-      <td>cover</td>
-    </tr>
-    <tr>
       <td>51</td>
       <td>cover</td>
     </tr>
