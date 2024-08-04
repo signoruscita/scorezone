@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scorezone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <meta name="description" content="https://scorez.one/">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:url" content="https://scorez.one/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Scorezone">
+  <meta property="og:description" content="https://scorez.one/">
+  <meta property="og:image" content="https://scorez.one/assets/og-title.jpg">
+  <meta property="og:image:width"" content="910">
+  <meta property="og:image:height"" content="446">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="scorez.one">
+  <meta property="twitter:url" content="https://scorez.one/">
+  <meta name="twitter:title" content="Scorezone">
+  <meta name="twitter:description" content="https://scorez.one/">
+  <meta name="twitter:image" content="https://scorez.one/assets/og-title.jpg">
+
+  <!-- favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet"> <!-- pixel font-->
+  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet"><!-- toaster -->
+
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet"><!-- font for nes.css-->
+  <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" /><!-- nes.css -->
+
+  <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script><!-- markdown parser-->
+  <script src="/assets/js/lazy-img.js"></script>
+  <link rel="stylesheet" href="/index.css" />
+  <script>
+    gsheetData = {
+      // https://docs.google.com/spreadsheets/d/1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA/edit?usp=sharing
+      documentId: new URLSearchParams(location.search).get('id'), // id from gsheet "shared with anyone"
+      sheetName: new URLSearchParams(location.search).get('sheet'), // sheet name
+      cache: true,
+    }
+    </script>
+  <script src="/js-gsheet.js"></script>
+
+  <title>Scorezone</title>
+</head>
+<body>
+  <section>
+    <h1 class="title text-center mt2 mb2 color-gold">
+      Scorezone
+      <br>
+      <i class="nes-icon star"></i>
+      <i class="nes-icon star"></i>
+      <i class="nes-icon star"></i>
+    </h1>
+
+    <section>
+      <div class="nes-container is-dark with-title pattern-bg">
+        <h2 class="title">
+          <i class="nes-icon close"></i>
+          Filtri
+        </h2>
+        <section id="filters"></section>
+      </div>
+
+      <div class="nes-container with-title mt2 pattern-bg">
+        <h2 class="title">
+          <i class="nes-logo"></i>
+          Sfide
+        </h2>
+        <nav></nav>
+      </div>
+    </section>
+
+    <main class="pattern-bg">
+      <div class="loader"></div>
+    </main>
+
+    <footer id="stats"></footer>
+  </section>
+
+  <a href="#" class="nes-btn is-error scroll-btn active"><span>&lt;</span></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="classifica.js"></script>
+
+</body>
+</html>
