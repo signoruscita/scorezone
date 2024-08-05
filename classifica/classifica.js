@@ -12,6 +12,7 @@
       filters: () => { return document.querySelector('#filters')},
       indice: () => { return document.querySelector('main')},
       stats: () => { return document.querySelector('#stats')},
+      title: () => { return document.querySelector('#main-title')},
     },
     css: {
       hidden: 'hidden',
@@ -67,6 +68,7 @@
   Utils_syncFilter();
   Utils_goToSfida(window.location.hash.substring(1));
   Utils_lazyLoadImages();
+  initTitle()
 
   function data_download() {
     var gsheetData = window.gsheetData || {};
@@ -410,6 +412,18 @@
     }, 10);
   }
 
+  function initTitle(titleEl = CONST.els.title()) {
+    const id = CONST.gsheet.id;
+    const src = `assets/${id}/webp/logo.webp`;
+    const newimage = `<img src="${src}"
+        onerror="this.style.display = 'none';"
+        style="
+          max-width: 100%;
+          margin: 0 auto;
+          max-height: 7rem;
+        " />`;
+    titleEl.innerHTML = newimage;
+  }
 
 })();
 
