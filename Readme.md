@@ -79,59 +79,6 @@ Tool per ridimensionare: https://imageresizer.com/bulk-resize, altezza 600px, fo
       <td>32</td>
       <td>cover</td>
     </tr>
-    <tr>
-      <td>38</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>47</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>51</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>52</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>60</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>71</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>74</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>76</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>79</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>80</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>82</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-    <tr>
-      <td>86</td>
-      <td>cover</td>
-    </tr>
-    <tr>
-      <td>96</td>
-      <td>cover</td>
-    </tr>
   </tbody>
 </table>
 
