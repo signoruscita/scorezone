@@ -308,9 +308,17 @@
   }
 
   function HtmlTemplate_Sfida_Classifica_Giocatore(player) {
+    const posText = ((pos) => {
+      switch (pos) {
+        case 1: return '🥇';
+        case 2: return '🥈';
+        case 3: return '🥉';
+        default: return `${pos}.&nbsp;`;
+      }
+    })(player.pos)
     return `
       <tr>
-        <td class="text-right nes-text is-success">${player.pos}.&nbsp;</td>
+        <td class="text-right nes-text is-success">${posText}</td>
         <td  class="text-right nes-text is-warning text-mono">${player.pts}&nbsp;</td>
         <td class="nes-text is-primary">${player.name}</td>
         <td class="nowrap">
