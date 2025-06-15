@@ -7,13 +7,24 @@
         <meta name="description" content="https://scorez.one/" />
 
         <script src="https://cdn.tailwindcss.com"></script>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        />
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+        <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script><!-- markdown parser-->
+        <script async src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
+        <script>
+            gsheetData = {
+                // https://docs.google.com/spreadsheets/d/1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA/edit?usp=sharing
+                documentId: "1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA", // id from gsheet "shared with anyone"
+                sheetName: "scorezone-database",
+                cache: true,
+            };
+        </script>
+        <script src="/js-gsheet.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+        <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet"><!-- toaster -->
+
+        <style>
             .retro-font {
                 font-family: "Press Start 2P", cursive;
             }
@@ -78,16 +89,11 @@
                     3px 100%;
                 z-index: 2;
             }
+            .lazybg {
+                background-image: none !important;
+            }
         </style>
-        <script>
-            gsheetData = {
-                // https://docs.google.com/spreadsheets/d/1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA/edit?usp=sharing
-                documentId: "1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA", // id from gsheet "shared with anyone"
-                sheetName: "scorezone-database",
-                cache: true,
-            };
-        </script>
-        <script src="/js-gsheet.js"></script>
+
     </head>
     <body class="bg-purple-900 min-h-screen pixel-dots py-10">
         <div class="container mx-auto px-4">
@@ -97,22 +103,22 @@
                     class="retro-font text-4xl md:text-6xl text-yellow-300 mb-4 text-shadow-lg shadow-black"
                 >
                     <span class="relative">
-                        <span class="absolute -left-2 -top-2 text-red-500">8</span>
+                        <span class="absolute -left-2 -top-2 text-red-500">S</span>
                         <span class="relative">SCOREZONE</span>
                         <span class="absolute -right-2 -bottom-2 text-blue-400">NE</span>
                     </span>
                 </h1>
                 <div class="relative inline-block">
                     <button
-                        class="retro-font pixel-button bg-green-500 text-black px-6 py-3 text-sm md:text-base hover:bg-green-400 transition-all"
+                        class="retro-font pixel-button bg-green-500 text-black px-6 py-3 text-[10px] hover:bg-green-400 transition-all"
                     >
-                        Old And Unimproved.
+                        <i onclick="location.href = location.href.split('#').shift();">Old And Unimproved.</i>
+                        <span
+                            class="absolute -right-2 -top-2 retro-font bg-yellow-400 text-black px-2 py-1 text-[0.5em] pixel-border"
+                        >
+                            &lt;3
+                        </span>
                     </button>
-                    <div
-                        class="absolute -right-4 -top-4 retro-font bg-yellow-400 text-black px-2 py-1 text-xs pixel-border"
-                    >
-                        &lt;3
-                    </div>
                 </div>
             </header>
 
@@ -123,9 +129,9 @@
                         type="text"
                         id="game-search"
                         class="retro-font w-full pixel-button bg-white text-black px-6 py-3 text-sm focus:outline-none"
-                        placeholder="SEARCH GAMES..."
+                        placeholder="SEARCH GAMES, PLAYERS..."
                     />
-                    <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
                         <i class="fas fa-search text-gray-700"></i>
                     </div>
                 </div>
@@ -133,7 +139,7 @@
 
             <!-- Filter Controls -->
             <div class="mb-8 flex flex-wrap justify-center gap-4" id="filters">
-                <button
+                <!-- <button
                     class="retro-font pixel-button bg-red-500 text-white px-4 py-2 text-xs active:bg-red-600 filter-btn"
                     data-filter="all"
                 >
@@ -162,12 +168,19 @@
                     data-filter="platformer"
                 >
                     PLATFORMER
-                </button>
+                </button> -->
             </div>
 
             <!-- Game Cards -->
             <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                class="
+                    relative
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    lg:grid-cols-3
+                    gap-8
+                    pb-10"
                 id="game-container"
             >
                 <!-- Cards will be inserted here by JavaScript -->
@@ -184,7 +197,23 @@
                     <i class="fas fa-chess-pawn"></i>
                 </div>
             </footer>
+
+
+            <a href="#" title="torna all'inizio" class="
+                fixed
+                z-50
+                bg-red-500
+                bottom-4
+                p-2
+                pixel-button
+                retro-font
+                right-4
+                transition-all
+            ">
+                <i class="fas fa-play fa-rotate-270"></i>
+            </a>
         </div>
+
 
         <script>
             initData().then((scoresList) => {
@@ -196,15 +225,50 @@
 
                 // Search functionality
                 const searchInput = document.getElementById("game-search");
-                searchInput.addEventListener("input", () => {
+                searchInput.addEventListener("input", debounce(() => {
                     const searchTerm = searchInput.value.toLowerCase();
                     const container = document.getElementById("game-container");
-                    container.innerHTML = "";
-                    games
-                        .filter((game) => game.fullTextSearch.includes(searchTerm))
-                        .forEach((game) => {
-                            container.appendChild(createGameCard(game));
+                    container.innerHTML = ""; // Clear previous results
+                    const found = games
+                        .filter((game) => {
+                            const ok = game.fullTextSearch.includes(searchTerm);
+                            if (ok) {
+                                container.appendChild(createGameCard(game))
+                            }
+                            return ok;
                         });
+                    if (found.length === 0) {
+                        container.innerHTML = `
+                            <article class="
+                                absolute
+                                bg-red-400
+                                game-card
+                                overflow-hidden crt
+                                pixel-border
+                                right-0 left-0
+                                text-center
+                                text-white
+                                top-0
+                                w-full
+                                p-4
+                            ">
+                                <i>No results. Try searching for something else.</i>
+                            </article>
+                        `;
+                    }
+                }));
+
+                document.addEventListener("click", (ev) => {
+                    const el = ev.target.closest("a");
+                    const action = el ? el.getAttribute("data-action") : null;
+                    if (!action) return;
+                    if (action === "clipboard-copy") {
+                        ev.preventDefault();
+                        if (el) {
+                            const text = window.location.toString().split('#')[0] + el.getAttribute('href')
+                            copyToClipboard(text);
+                        }
+                    }
                 });
 
                 document.getElementById("filters").addEventListener("click", (ev) => {
@@ -359,34 +423,51 @@
                         });
                         return games;
                     } catch (error) {
-                        console.error("Error loading games:", error);
+                        console.error("loadGames Error loading games:", error);
                         renderGames();
                         return [];
                     }
                 }
 
-                function cardTemplate(game) {
+                function gameCardContentTemplate(game) {
                     return `
-                            <div id="sfida-${game.challengeNum}" class="absolute top-0 left-0 w-full h-1/3 bg-black bg-opacity-30 z-10"></div>
-                            <div class="absolute top-2 right-2 retro-font text-white text-xs bg-black px-2 py-1 pixel-border">
-                                ${game.simpleDate || game.year || game.date}
-                            </div>
+                            <div class="absolute top-0 left-0 w-full no-h-1/3 h-48 bg-black bg-opacity-30 z-10"></div>
+
+                            <a
+                                href="#sfida-${game.challengeNum}"
+                                class="
+                                    absolute
+                                    top-2
+                                    right-2
+                                    retro-font
+                                    text-white
+                                    text-[10px]
+                                    ${game.color}
+                                    px-2 py-1
+                                    pixel-border
+                                    z-20"
+                                title="Sfida n. ${game.challengeNum}"
+                                data-action="clipboard-copy">
+                                    #${game.challengeNum}
+                            </a>
 
                             <div class="relative h-48 overflow-hidden">
                                 <img
-                                  loading="lazy"
-                                  src="${game.screenshot}"
-                                  alt=" "
-                                  class="w-full h-full object-cover object-top">
+                                    alt=" "
+                                    class="w-full h-full object-cover object-top"
+                                    loading="lazy"
+                                    src="${game.screenshot}">
                             </div>
 
                             <div class="p-4">
                                 <h3 class="retro-font text-white text-lg mb-2">${game.title}</h3>
-                                <p class="text-white text-opacity-80 text-xs mb-3">${game.simpleDate ?? game.date ?? game.romset}</p>
+                                <p class="text-white text-opacity-80 text-xs mb-3">romset: ${
+                                    game.romset
+                                }</p>
 
                                 <div class="flex justify-between items-center mb-3">
-                                    <span class="retro-font text-xs text-white bg-black px-2 py-1 pixel-border">
-                                        #${game.challengeNum}
+                                    <span class="retro-font text-xs text-white bg-blackk px-2 py-1 pixel-border">
+                                        ${game.simpleDate || game.year || game.date || "n/a"}
                                     </span>
                                     <div class="text-xs" title="${game.playersCount} / 15 partecipanti">
                                         ${generateStars(game)}
@@ -434,6 +515,7 @@
                         yearButton.classList.add(buttonColor);
                         els.push(yearButton);
                     }
+                    els.reverse();
                     yearFiltersContainer.append(...els);
                 }
 
@@ -515,9 +597,10 @@
 
                 // Function to create game card (extracted for reuse)
                 function createGameCard(game) {
-                    const gameCard = document.createElement("div");
+                    const gameCard = document.createElement("article");
+                    gameCard.setAttribute("id", `sfida-${game.challengeNum}`);
                     gameCard.className = `game-card pixel-border ${game.color} relative overflow-hidden crt`;
-                    gameCard.innerHTML = cardTemplate(game);
+                    gameCard.innerHTML = gameCardContentTemplate(game);
                     return gameCard;
                 }
 
@@ -548,6 +631,46 @@
                 });
 
                 return doc;
+            }
+            function copyToClipboard(text) {
+                var success = false;
+                try {
+                    // copy to clipboard
+                    navigator.clipboard.writeText(text);
+                    success = true;
+                } catch (e) {
+                    success = false;
+                    console.error('copyToClipboard error', e);
+                }
+                if (success) {
+                    Toastify({
+                        text: "Link copied to clipboard!",
+                        duration: 2000000,
+                        className: `
+                            retro-font
+                            text-xs
+                        `,
+                        close: false,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: '#fde047',
+                            color: 'rgba(0, 0, 0, 0.9)',
+                        },
+                    }).showToast();
+                }
+            }
+            function debounce (callback, wait = 300) {
+                let timeoutId = null;
+
+                return (...args) => {
+                    window.clearTimeout(timeoutId);
+
+                    timeoutId = window.setTimeout(() => {
+                        callback.apply(null, args);
+                    }, wait);
+                };
             }
         </script>
     </body>
