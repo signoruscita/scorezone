@@ -62,12 +62,14 @@
           transition: all 0.1s ease;
       }
 
-      .pixel-button:hover {
+      .pixel-button:hover,
+      .pixel-button.hover {
           transform: translate(2px, 2px);
           box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
       }
 
-      .pixel-button:active {
+      .pixel-button:active,
+      .pixel-button.active {
           transform: translate(4px, 4px);
           box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.8);
       }
@@ -141,7 +143,7 @@
                   type="text"
                   id="game-search"
                   class="retro-font w-full pixel-button bg-white text-black px-6 py-3 text-sm focus:outline-none"
-                  placeholder="SEARCH GAMES, PLAYERS..."
+                  placeholder="CERCA TITOLI, GIOCATORI..."
               />
               <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
                   <i class="fas fa-search text-gray-700"></i>
@@ -151,7 +153,11 @@
 
       <!-- Filter Controls -->
       <div class="mb-8 flex flex-wrap justify-center gap-4" id="filters">
-          <!-- <button
+        <button
+              class="retro-font pixel-button bg-red-500 text-white px-4 py-2 text-xs active:bg-red-600 filter-btn selected"
+              data-filter="all"
+          >TUTTI</button>
+        <!-- <button
               class="retro-font pixel-button bg-red-500 text-white px-4 py-2 text-xs active:bg-red-600 filter-btn"
               data-filter="all"
           >
@@ -218,6 +224,7 @@
           bottom-4
           hover:bg-red-300
           p-2
+          pl-3 pr-3
           pixel-button
           retro-font
           right-4
@@ -229,218 +236,242 @@
 
 
   <script>
+      let games = []; // use it as a global storage for games data
+      renderGames(); // initial render with empty data
+
       initData().then((scoresList) => {
-          // Game data - will be loaded from CSV
-          let games = [];
-
-          // Initial render
-          renderGames();
-
-          // Search functionality
-          const searchInput = document.getElementById("game-search");
-          searchInput.addEventListener("input", debounce(() => {
-              const searchTerm = searchInput.value.toLowerCase();
-              const container = document.getElementById("game-container");
-              container.innerHTML = ""; // Clear previous results
-              const found = games
-                  .filter((game) => {
-                      const ok = game.fullTextSearch.includes(searchTerm);
-                      if (ok) {
-                          container.appendChild(createGameCard(game))
-                      }
-                      return ok;
-                  });
-              if (found.length === 0) {
-                  container.innerHTML = `
-                      <article class="
-                          absolute
-                          bg-red-400
-                          game-card
-                          overflow-hidden crt
-                          pixel-border
-                          right-0 left-0
-                          text-center
-                          text-white
-                          top-0
-                          w-full
-                          p-4
-                      ">
-                          <i>No results. Try searching for something else.</i>
-                      </article>
-                  `;
-              }
-          }));
-
-          document.addEventListener("click", (ev) => {
-              const el = ev.target.closest("a");
-              const action = el ? el.getAttribute("data-action") : null;
-              if (!action) return;
-              if (action === "clipboard-copy") {
-                  ev.preventDefault();
-                  if (el) {
-                      const text = window.location.toString().split('#')[0] + el.getAttribute('href')
-                      copyToClipboard(text);
-                  }
-              }
+          // scoresList data from CSV
+          loadGames(scoresList).then((loadedGames) => {
+            games = loadedGames;
+            createYearFilters(games); // generate year filters based on the dataset, it's needed only once
+            renderGames({ games }); // render games after loading
           });
+      });
 
-          document.getElementById("filters").addEventListener("click", (ev) => {
-              if (!ev.target.getAttribute("data-filter")) return;
-              const self = document.getElementById("filters");
-              const buttons = self.querySelectorAll(".filter-btn");
-              buttons.forEach((btn) => {
-                  btn.classList.remove("bg-gray-800", "text-white");
-                  const filter = btn.getAttribute("data-filter");
-                  const color = getButtonColor(filter);
-                  btn.classList.add(color);
-              });
-              const btn = ev.target;
+      // setup search
+      document.getElementById("game-search").addEventListener("input", debounce(() => {
+          const filtered = filterGamesByAllTerms({ list: games, });
+          renderGames({ games: filtered });
+      }));
+
+      // setup filter buttons
+      document.getElementById("filters").addEventListener("click", (ev) => {
+          if (!ev.target.getAttribute("data-filter")) return;
+          const self = document.getElementById("filters");
+          const buttons = self.querySelectorAll(".filter-btn");
+          const swapClasses = [
+            "bg-gray-800", "text-black", "text-white", "selected", "active"
+          ];
+          // reset all buttons
+          buttons.forEach((btn) => {
+              btn.classList.remove(...swapClasses);
               const filter = btn.getAttribute("data-filter");
               const color = getButtonColor(filter);
-              btn.classList.remove(color);
-              btn.classList.add("bg-gray-800");
-              renderGames({ games, filter });
+              btn.classList.add(color);
           });
+          // set the clicked button
+          const btn = ev.target;
+          const filterValue = btn.getAttribute("data-filter");
+          const color = getButtonColor(filterValue);
+          btn.classList.remove(color);
+          btn.classList.add(...swapClasses);
 
-          loadGames(scoresList).then((loadedGames) => {
-              games = loadedGames;
-              // Generate year filters based on the dataset
-              createYearFilters(games);
-              renderGames({ games });
+          const filtered = filterGamesByAllTerms({
+            list: games,
           });
+          // trigger the render with filtered games
+          renderGames({ games: filtered });
+      });
 
-          // Fetch game data from CSV
-          async function loadGames(games) {
-              try {
-                  games = games.map((game) => {
-                      const id = game.id,
-                          date = game.data,
-                          challengeNum = game["sfida n."],
-                          title = game.titolo
-                              ? game.titolo.toUpperCase()
-                              : "UNKNOWN GAME",
-                          rules = game.regole,
-                          romset = game.romset,
-                          p1pts = game.pos_01_pts,
-                          p1name = game.pos_01_name,
-                          p2pts = game.pos_02_pts,
-                          p2name = game.pos_02_name,
-                          p3pts = game.pos_03_pts,
-                          p3name = game.pos_03_name,
-                          p4pts = game.pos_04_pts,
-                          p4name = game.pos_04_name,
-                          p5pts = game.pos_05_pts,
-                          p5name = game.pos_05_name,
-                          p6pts = game.pos_06_pts,
-                          p6name = game.pos_06_name,
-                          p7pts = game.pos_07_pts,
-                          p7name = game.pos_07_name,
-                          p8pts = game.pos_08_pts,
-                          p8name = game.pos_08_name,
-                          p9pts = game.pos_09_pts,
-                          p9name = game.pos_9_name,
-                          p10pts = game.pos_10_pts,
-                          p10name = game.pos_10_name,
-                          p11pts = game.pos_11_pts,
-                          p11name = game.pos_11_name,
-                          p12pts = game.pos_12_pts,
-                          p12name = game.pos_12_name,
-                          p13pts = game.pos_13_pts,
-                          p13name = game.pos_13_name,
-                          p14pts = game.pos_14_pts,
-                          p14name = game.pos_14_name,
-                          p15pts = game.pos_15_pts,
-                          p15name = game.pos_15_name;
-
-                      // Extract year from date
-                      const d = date ? new Date(date) : new Date();
-                      const year = d.getFullYear();
-                      const simpleDate = d.toLocaleDateString();
-                      // Generate random genre for now since it's not in the CSV
-                      const genre = game.genere || null;
-                      const screenshot = `https://scorez.one/assets/webp/${id}-screen.webp`;
-                      const logo = `https://scorez.one/assets/webp/${id}-title.webp`;
-
-                      const allNames = [
-                          p1name,
-                          p2name,
-                          p3name,
-                          p4name,
-                          p5name,
-                          p6name,
-                          p7name,
-                          p8name,
-                          p9name,
-                          p10name,
-                          p11name,
-                          p12name,
-                          p13name,
-                          p14name,
-                          p15name,
-                      ];
-
-                      const playersCount = allNames.filter(
-                          (name) => name && name.length,
-                      ).length;
-
-                      const fullTextSearch = [
-                          id,
-                          challengeNum,
-                          date,
-                          ...allNames,
-                          playersCount,
-                          rules,
-                          romset,
-                      ]
-                          .join(" ")
-                          .replace("\r", "")
-                          .replace("\n", "")
-                          .toLowerCase();
-                      return {
-                          id,
-                          challengeNum,
-                          date,
-                          simpleDate,
-                          title,
-                          rules,
-                          romset,
-                          year,
-                          genre,
-                          color: getColorForGame({ genre, title }),
-                          players: [
-                              { name: p1name, points: p1pts },
-                              { name: p2name, points: p2pts },
-                              { name: p3name, points: p3pts },
-                              { name: p4name, points: p4pts },
-                              { name: p5name, points: p5pts },
-                              { name: p6name, points: p6pts },
-                              { name: p7name, points: p7pts },
-                              { name: p8name, points: p8pts },
-                              { name: p9name, points: p9pts },
-                              { name: p10name, points: p10pts },
-                              { name: p11name, points: p11pts },
-                              { name: p12name, points: p12pts },
-                              { name: p13name, points: p13pts },
-                              { name: p14name, points: p14pts },
-                              { name: p15name, points: p15pts },
-                          ].filter((p) => p.name && p.name.trim() !== ""),
-                          screenshot,
-                          playersCount,
-                          fullTextSearch,
-                          winnerName: p1name || null,
-                      };
-                  });
-
-                  games.sort((a, b) => {
-                      return a.challengeNum < b.challengeNum ? 1 : -1;
-                  });
-                  return games;
-              } catch (error) {
-                  console.error("loadGames Error loading games:", error);
-                  renderGames();
-                  return [];
+      // setup clipboard copy
+      document.addEventListener("click", (ev) => {
+          const el = ev.target.closest("a");
+          const action = el ? el.getAttribute("data-action") : null;
+          if (!action) return;
+          if (action === "clipboard-copy") {
+              ev.preventDefault();
+              if (el) {
+                  const text = window.location.toString().split('#')[0] + el.getAttribute('href')
+                  copyToClipboard(text);
               }
           }
+      });
+
+
+
+      function filterGamesByAllTerms({list}) {
+        const yearFiltered = filterGamesByYear({
+          list: list,
+          year: getYearFilterValue(),
+        });
+        const textFiltered = filterGamesByText({
+            list: yearFiltered,
+            text: getTextFilterValue(),
+        });
+        const result = textFiltered;
+        return result || [];
+      }
+
+      function filterGamesByText({list, text}) {
+        const found = list.filter((game) => game.fullTextSearch.includes(text));
+        return found || [];
+      }
+
+      function filterGamesByYear({list, year}) {
+        if (year === "all") {
+          return list;
+        }
+        const found = list.filter((game) => game.year == year);
+        return found || [];
+      }
+
+      function getTextFilterValue() {
+          const searchInput = document.getElementById("game-search");
+          const searchTerm = searchInput.value.toLowerCase();
+          return searchTerm;
+      }
+
+      function getYearFilterValue() {
+          const btn = document.getElementById("filters").querySelectorAll(".filter-btn.selected")[0];
+          if (!btn) return "all";
+          const filter = btn.getAttribute("data-filter");
+          return filter.replace("year_", "");
+      }
+
+      // Fetch game data from CSV
+      async function loadGames(games) {
+          try {
+              games = games.map((game) => {
+                  const id = game.id,
+                      date = game.data,
+                      challengeNum = game["sfida n."],
+                      title = game.titolo
+                          ? game.titolo.toUpperCase()
+                          : "UNKNOWN GAME",
+                      rules = game.regole,
+                      romset = game.romset,
+                      p1pts = game.pos_01_pts,
+                      p1name = game.pos_01_name,
+                      p2pts = game.pos_02_pts,
+                      p2name = game.pos_02_name,
+                      p3pts = game.pos_03_pts,
+                      p3name = game.pos_03_name,
+                      p4pts = game.pos_04_pts,
+                      p4name = game.pos_04_name,
+                      p5pts = game.pos_05_pts,
+                      p5name = game.pos_05_name,
+                      p6pts = game.pos_06_pts,
+                      p6name = game.pos_06_name,
+                      p7pts = game.pos_07_pts,
+                      p7name = game.pos_07_name,
+                      p8pts = game.pos_08_pts,
+                      p8name = game.pos_08_name,
+                      p9pts = game.pos_09_pts,
+                      p9name = game.pos_9_name,
+                      p10pts = game.pos_10_pts,
+                      p10name = game.pos_10_name,
+                      p11pts = game.pos_11_pts,
+                      p11name = game.pos_11_name,
+                      p12pts = game.pos_12_pts,
+                      p12name = game.pos_12_name,
+                      p13pts = game.pos_13_pts,
+                      p13name = game.pos_13_name,
+                      p14pts = game.pos_14_pts,
+                      p14name = game.pos_14_name,
+                      p15pts = game.pos_15_pts,
+                      p15name = game.pos_15_name;
+
+                  // Extract year from date
+                  const d = date ? new Date(date) : new Date();
+                  const year = d.getFullYear();
+                  const simpleDate = d.toLocaleDateString();
+                  // Generate random genre for now since it's not in the CSV
+                  const genre = game.genere || null;
+                  const screenshot = `https://scorez.one/assets/webp/${id}-screen.webp`;
+                  const logo = `https://scorez.one/assets/webp/${id}-title.webp`;
+
+                  const allNames = [
+                      p1name,
+                      p2name,
+                      p3name,
+                      p4name,
+                      p5name,
+                      p6name,
+                      p7name,
+                      p8name,
+                      p9name,
+                      p10name,
+                      p11name,
+                      p12name,
+                      p13name,
+                      p14name,
+                      p15name,
+                  ];
+
+                  const playersCount = allNames.filter(
+                      (name) => name && name.length,
+                  ).length;
+
+                  const fullTextSearch = [
+                      `#${id}`,
+                      challengeNum,
+                      title,
+                      simpleDate,
+                      date,
+                      ...allNames,
+                      playersCount,
+                      rules,
+                      romset,
+                  ]
+                      .join(" ")
+                      .replace("\r", "")
+                      .replace("\n", "")
+                      .toLowerCase();
+                  return {
+                      id,
+                      challengeNum,
+                      date,
+                      simpleDate,
+                      title,
+                      rules,
+                      romset,
+                      year,
+                      genre,
+                      color: getColorForGame({ genre, title }),
+                      players: [
+                          { name: p1name, points: p1pts },
+                          { name: p2name, points: p2pts },
+                          { name: p3name, points: p3pts },
+                          { name: p4name, points: p4pts },
+                          { name: p5name, points: p5pts },
+                          { name: p6name, points: p6pts },
+                          { name: p7name, points: p7pts },
+                          { name: p8name, points: p8pts },
+                          { name: p9name, points: p9pts },
+                          { name: p10name, points: p10pts },
+                          { name: p11name, points: p11pts },
+                          { name: p12name, points: p12pts },
+                          { name: p13name, points: p13pts },
+                          { name: p14name, points: p14pts },
+                          { name: p15name, points: p15pts },
+                      ].filter((p) => p.name && p.name.trim() !== ""),
+                      screenshot,
+                      playersCount,
+                      fullTextSearch,
+                      winnerName: p1name || null,
+                  };
+              });
+
+              games.sort((a, b) => {
+                  return a.challengeNum < b.challengeNum ? 1 : -1;
+              });
+              return games;
+          } catch (error) {
+              console.error("loadGames Error loading games:", error);
+              renderGames();
+              return [];
+          }
+      }
 
           function gameCardContentTemplate(game) {
               return `
@@ -517,10 +548,9 @@
                   currentYear += 1
               ) {
                   const yearName = currentYear;
-
                   const yearButton = document.createElement("button");
                   const yearFilter = `year_${currentYear}`;
-                  yearButton.className = `retro-font pixel-button  text-white px-4 py-2 text-xs active:bg-purple-600 filter-btn`;
+                  yearButton.className = `retro-font pixel-button text-black px-4 py-2 text-xs active:bg-purple-600 filter-btn`;
                   yearButton.setAttribute("data-filter", yearFilter);
                   yearButton.textContent = yearName;
 
@@ -594,27 +624,67 @@
               return gen || name || "bg-gray-500";
           }
 
+          function renderEmptyList() {
+            const container = document.getElementById("game-container");
+            container.innerHTML = `
+                <article class="
+                    absolute
+                    bg-red-400
+                    game-card
+                    overflow-hidden crt
+                    pixel-border
+                    right-0 left-0
+                    text-center
+                    text-white
+                    top-0
+                    w-full
+                    p-4
+                ">
+                    <i>Nessun risultato. Cerca qualcos'altro.</i>
+                </article>
+            `;
+            return container;
+          }
+
+          function renderSearching() {
+            const container = document.getElementById("game-container");
+            container.innerHTML = `
+                <article class="
+                    absolute
+                    bg-stone-400
+                    game-card
+                    overflow-hidden crt
+                    pixel-border
+                    right-0 left-0
+                    text-center
+                    text-white
+                    top-0
+                    w-full
+                    p-4
+                    pt-10
+                    pb-10
+                ">
+                    <i>Loading...</i>
+                </article>
+            `;
+            return container;
+          }
+
           // Update renderGames to use createGameCard
-          function renderGames({ games = [], filter = "all" } = {}) {
-              const container = document.getElementById("game-container");
-              container.innerHTML = "";
-
-              let filteredGames = games;
-              if (filter !== "all") {
-                  if (filter.startsWith("year_")) {
-                      const needYear = filter.replace("year_", "");
-                      filteredGames = games.filter(
-                          (game) => `${game.year}` == needYear,
-                      );
-                  } else {
-                      filteredGames = games.filter((game) => game.genre === filter);
-                  }
-              }
-
-              filteredGames.forEach((game) => {
-                  const gameCard = createGameCard(game);
-                  container.appendChild(gameCard);
-              });
+          function renderGames({ games = [] } = {}) {
+              renderSearching();
+              debounce(() => {
+                if (games.length === 0) {
+                   renderEmptyList();
+                   return;
+                }
+                const container = document.getElementById("game-container");
+                container.innerHTML = "";
+                games.forEach((game) => {
+                    const gameCard = createGameCard(game);
+                    container.appendChild(gameCard);
+                });
+              }, 220)();
           }
 
           // Function to create game card (extracted for reuse)
@@ -639,7 +709,6 @@
               }
               return stars;
           }
-      });
 
     function initData() {
         const gsheetData = window.gsheetData || {};
@@ -652,7 +721,7 @@
             sheetName: sheetName,
             cache: cache,
         });
-
+        // Promise to handle async loading
         return doc;
     }
 
@@ -686,7 +755,7 @@
         }
     }
 
-    function debounce (callback, wait = 300) {
+    function debounce (callback, wait = 160) {
         let timeoutId = null;
 
         return (...args) => {
