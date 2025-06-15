@@ -5,11 +5,30 @@
         <title>Scorezone</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="https://scorez.one/" />
-
-        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:url" content="https://scorez.one/">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Scorezone">
+        <meta property="og:description" content="https://scorez.one/">
+        <meta property="og:image" content="https://scorez.one/assets/og-title.jpg">
+        <meta property="og:image:width"" content="910">
+        <meta property="og:image:height"" content="446">
+        <!-- Twitter Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="scorez.one">
+        <meta property="twitter:url" content="https://scorez.one/">
+        <meta name="twitter:title" content="Scorezone">
+        <meta name="twitter:description" content="https://scorez.one/">
+        <meta name="twitter:image" content="https://scorez.one/assets/og-title.jpg">
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/assets/favicon/site.webmanifest">
+        <!-- scripts -->
+        <script src="https://cdn.tailwindcss.com"></script><!-- tailwind css -->
         <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script><!-- markdown parser-->
-        <script async src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script><!-- toaster -->
         <script>
             gsheetData = {
                 // https://docs.google.com/spreadsheets/d/1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA/edit?usp=sharing
@@ -17,13 +36,12 @@
                 sheetName: "scorezone-database",
                 cache: true,
             };
-        </script>
-        <script src="/js-gsheet.js"></script>
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
-        <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet"><!-- toaster -->
-
+        </script><!-- data for js-gsheet.js -->
+        <script src="/js-gsheet.js"></script><!-- gsheet.js -->
+        <!-- css -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /><!-- Font Awesome icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" /><!-- font for retro style -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"><!-- toaster -->
         <style>
             .retro-font {
                 font-family: "Press Start 2P", cursive;
@@ -110,7 +128,7 @@
                 </h1>
                 <div class="relative inline-block">
                     <button
-                        class="retro-font pixel-button bg-green-500 text-black px-6 py-3 text-[10px] hover:bg-green-400 transition-all"
+                        class="retro-font pixel-button bg-zinc-500 text-black px-6 py-3 text-[10px] hover:bg-zinc-300 transition-all"
                     >
                         <i onclick="location.href = location.href.split('#').shift();">Old And Unimproved.</i>
                         <span
@@ -204,6 +222,7 @@
                 z-50
                 bg-red-500
                 bottom-4
+                hover:bg-red-300
                 p-2
                 pixel-button
                 retro-font
