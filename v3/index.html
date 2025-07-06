@@ -412,7 +412,7 @@
         // activate selected game
         if (selectedGame) {
             var el = document.querySelector(window.location.hash);
-            console.log("Selected game:", selectedGame, el);
+
             el?.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
             const openButton = document.querySelector(`[data-action="open-${selectedGame}"]`);
             openButton?.click();
@@ -872,8 +872,6 @@
 
     // Function to show game details in a modal or similar UI
     function showDetails(game) {
-        console.log("Game Details:", game);
-
         const template = document.getElementById("game-details-template");
         if (!template) {
             console.error('Game details template not found');
@@ -922,10 +920,7 @@
         };
 
         // Clone template and replace placeholders
-        const clone = template.content.cloneNode(true);
-        const tempDiv = document.createElement('div');
-        tempDiv.appendChild(clone);
-        let html = tempDiv.innerHTML;
+        let html = template.innerHTML;
 
         // Replace all placeholders
         Object.entries(templateData).forEach(([placeholder, value]) => {
@@ -935,38 +930,73 @@
         // Create modal container
         const modalContainer = document.createElement('div');
         modalContainer.id = 'game-details-modal';
+        modalContainer.className = 'modal-container';
+        modalContainer.setAttribute('data-slide', game.id);
         modalContainer.innerHTML = html;
-
-        // Add to body
-        document.body.appendChild(modalContainer);
-
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
-
-        // Add escape key listener
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        };
-        document.addEventListener('keydown', handleEscape);
-
-        // Store cleanup function
-        modalContainer._cleanup = () => {
-            document.removeEventListener('keydown', handleEscape);
-            document.body.style.overflow = '';
-        };
+        // Add to body
+        document.body.appendChild(modalContainer);
+        document.addEventListener('keydown', closeModal);
     }
 
     // Function to close modal
-    function closeModal() {
-        const modal = document.getElementById('game-details-modal');
-        if (modal) {
-            if (modal._cleanup) {
-                modal._cleanup();
-            }
-            modal.remove();
+    function closeModal(...args) {
+        const event = args[0];
+        // store for usage
+        const modalContainer = document.querySelector('.modal-container');
+
+        // next slide
+        if (event && event.type && event.type === 'keydown' && event.key === 'ArrowRight') {
+            const nextGame = findGameById({
+              id: modalContainer.getAttribute('data-slide'),
+              offset: +1
+            });
+            resetModal(modalContainer);
+            showDetails(nextGame);
+            return;
         }
+        // prev slide
+        if (event && event.type && event.type === 'keydown' && event.key === 'ArrowLeft') {
+            const prevGame = findGameById({
+              id: modalContainer.getAttribute('data-slide'),
+              offset: -1
+            });
+            resetModal(modalContainer);
+            showDetails(prevGame);
+            return;
+        }
+
+        // prevent other keys from closing the modal
+        if (event && event.type && event.type === 'keydown' && event.key !== 'Escape') {
+            return; // only close on Escape key
+        }
+
+        // just close
+        resetModal(modalContainer);
+    }
+
+    function resetModal(modalContainer) {
+      if (modalContainer) {
+            modalContainer.remove();
+            // Prevent body scroll
+            document.body.style.overflow = '';
+          }
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', closeModal);
+    }
+
+    function findGameById({id, offset = 0}) {
+        const found = games.find((game, index) => {
+          return game.id === (Number.parseInt(id) + offset)
+        });
+        if (found) {
+          return found;
+        }
+        if (offset <= 0) {
+          return games[0];
+        }
+        return games[games.length - 1]
     }
 
     // Function to create game card (extracted for reuse)
