@@ -204,6 +204,149 @@
           <!-- Cards will be inserted here by JavaScript -->
       </div>
 
+      <!-- Game Card Template -->
+      <template style="display: none;" id="game-card-template">
+          <div class="absolute top-0 left-0 w-full no-h-1/3 h-48 bg-black bg-opacity-30 z-10"></div>
+
+          <a
+              href="#sfida-{challengeNum}"
+              class="
+                  absolute
+                  pixel-border
+                  px-2 py-1
+                  retro-font
+                  right-2
+                  text-[10px]
+                  text-white
+                  top-2
+                  z-20
+                  {color}
+              "
+              title="Sfida n. {challengeNum}"
+              data-action="clipboard-copy">
+                  #{challengeNum}
+          </a>
+
+          <div class="relative h-48 overflow-hidden">
+              <img
+                  alt=" "
+                  class="w-full h-full object-cover object-top"
+                  loading="lazy"
+                  src="{screenshot}">
+          </div>
+
+          <div class="p-4">
+              <h3 class="retro-font text-white text-lg mb-2">{title}</h3>
+              <p class="text-white text-opacity-80 text-xs mb-3">romset: {romset}</p>
+
+              <div class="flex justify-between items-center mb-3">
+                  <span class="retro-font text-xs text-white bg-blackk px-2 py-1 pixel-border">
+                      {date}
+                  </span>
+                  <div class="text-xs" title="{playersCount} / 15 partecipanti">
+                      {stars}
+                  </div>
+              </div>
+              <button data-action="open-{challengeNum}" class="w-full retro-font pixel-button bg-white text-black py-2 text-xs hover:bg-gray-200 whitespace-nowrap overflow-hidden text-ellipsis">{winnerName}</button>
+          </div>
+
+          <div class="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"></div>
+          <div class="absolute bottom-0 left-0 w-16 h-1 bg-red-500"></div>
+      </template>
+
+      <!-- Game Details Modal Template -->
+      <template style="display: none;" id="game-details-template">
+          <div class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4">
+              <div class="relative w-full max-w-4xl max-h-screen overflow-y-auto {game-color} pixel-border retro-font">
+                  <!-- Close Button -->
+                  <button
+                      data-action="close-modal"
+                      class="absolute top-4 right-4 z-60 bg-red-500 text-white px-3 py-2 pixel-button hover:bg-red-600 text-xs"
+                      title="Chiudi">
+                      ✕
+                  </button>
+
+                  <!-- Header -->
+                  <div class="bg-black bg-opacity-50 p-6 text-center">
+                      <h1 class="text-yellow-300 text-2xl md:text-4xl mb-2">SFIDA N. {challengeNum}</h1>
+                      <h2 class="text-white text-lg md:text-xl mb-2">{title}</h2>
+                      <div class="flex justify-center items-center gap-4 text-sm">
+                          <span class="bg-white text-black px-3 py-1 pixel-border">{date}</span>
+                          <span class="text-yellow-400">{stars}</span>
+                          <span class="text-white opacity-80">{playersCount} giocatori</span>
+                      </div>
+                  </div>
+
+                  <!-- Game Screenshot -->
+                  <div class="relative h-64 md:h-80 overflow-hidden bg-black">
+                      <img
+                          loading="lazy"
+                          src="{logo}"
+                          alt="{title}"
+                          class="w-full h-full object-contain">
+                      <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                  </div>
+
+                  <!-- Game Info -->
+                  <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- Left Column - Game Details -->
+                      <div>
+                          <h3 class="text-yellow-300 text-sm mb-2 pixel-border inline-block px-2 py-1 bg-black">DETTAGLI GIOCO</h3>
+                          <div class="space-y-3 text-white">
+                              <div class="flex justify-between items-center py-2 border-b border-gray-600">
+                                  <span class="text-gray-300">Romset:</span>
+                                  <span class="text-white font-mono text-sm">{romset}</span>
+                              </div>
+                              <div class="flex justify-between items-center py-2 border-b border-gray-600">
+                                  <span class="text-gray-300">Data:</span>
+                                  <span class="text-white">{date}</span>
+                              </div>
+                              <div class="flex justify-between items-center py-2 border-b border-gray-600">
+                                  <span class="text-gray-300">Partecipanti:</span>
+                                  <span class="text-white">{playersCount} / 15</span>
+                              </div>
+                              <!-- <div class="flex justify-between items-center py-2">
+                                  <span class="text-gray-300">Difficoltà:</span>
+                                  <div class="text-yellow-400">{stars}</div>
+                              </div> -->
+                          </div>
+
+                          <!-- Rules Section -->
+                          <div class="mt-6">
+                              <h4 class="text-yellow-300 text-sm mb-2 pixel-border inline-block px-2 py-1 bg-black">REGOLE</h4>
+                              <div class="text-white text-xs leading-relaxed bg-black bg-opacity-30 p-3 pixel-border">
+                                  {rules}
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- Right Column - Leaderboard -->
+                      <div>
+                        <h3 class="text-yellow-300 text-sm mb-2 pixel-border inline-block px-2 py-1 bg-black">CLASSIFICA</h3>
+                        <div class="space-y-2">
+                            {leaderboard}
+                        </div>
+                      </div>
+                  </div>
+
+                  <!-- Footer Actions -->
+                  <div class="p-6 bg-black bg-opacity-50 flex flex-wrap justify-center gap-4">
+                      <button
+                          data-action="clipboard-copy-modal"
+                          data-challenge="{challengeNum}"
+                          class="bg-blue-500 text-white px-4 py-2 pixel-button hover:bg-blue-600 text-xs">
+                          📋 COPIA LINK
+                      </button>
+                      <button
+                          data-action="close-modal"
+                          class="bg-gray-600 text-white px-4 py-2 pixel-button hover:bg-gray-700 text-xs">
+                          ↩ TORNA ALLA LISTA
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </template>
+
       <!-- Footer -->
       <footer class="mt-16 text-center retro-font text-yellow-600 text-xs">
           <p>© 2024-Today Scorezone</p>
@@ -236,481 +379,594 @@
 
 
   <script>
-      let games = []; // use it as a global storage for games data
-      renderGames(); // initial render with empty data
+    let games = []; // use it as a global storage for games data
+    renderGames(); // initial render with empty data
 
-      initData().then((scoresList) => {
-          // scoresList data from CSV
-          loadGames(scoresList).then((loadedGames) => {
-            games = loadedGames;
-            createYearFilters(games); // generate year filters based on the dataset, it's needed only once
-            renderGames({ games }); // render games after loading
-          });
-      });
-
-      // setup search
-      document.getElementById("game-search").addEventListener("input", debounce(() => {
-          const filtered = filterGamesByAllTerms({ list: games, });
-          renderGames({ games: filtered });
-      }));
-
-      // setup filter buttons
-      document.getElementById("filters").addEventListener("click", (ev) => {
-          if (!ev.target.getAttribute("data-filter")) return;
-          const self = document.getElementById("filters");
-          const buttons = self.querySelectorAll(".filter-btn");
-          const swapClasses = [
-            "bg-gray-800", "text-black", "text-white", "selected", "active"
-          ];
-          // reset all buttons
-          buttons.forEach((btn) => {
-              btn.classList.remove(...swapClasses);
-              const filter = btn.getAttribute("data-filter");
-              const color = getButtonColor(filter);
-              btn.classList.add(color);
-          });
-          // set the clicked button
-          const btn = ev.target;
-          const filterValue = btn.getAttribute("data-filter");
-          const color = getButtonColor(filterValue);
-          btn.classList.remove(color);
-          btn.classList.add(...swapClasses);
-
-          const filtered = filterGamesByAllTerms({
-            list: games,
-          });
-          // trigger the render with filtered games
-          renderGames({ games: filtered });
-      });
-
-      // setup clipboard copy
-      document.addEventListener("click", (ev) => {
-          const el = ev.target.closest("a");
-          const action = el ? el.getAttribute("data-action") : null;
-          if (!action) return;
-          if (action === "clipboard-copy") {
-              ev.preventDefault();
-              if (el) {
-                  const text = window.location.toString().split('#')[0] + el.getAttribute('href')
-                  copyToClipboard(text);
-              }
-          }
-      });
-
-
-
-      function filterGamesByAllTerms({list}) {
-        const yearFiltered = filterGamesByYear({
-          list: list,
-          year: getYearFilterValue(),
+    initData().then((scoresList) => {
+        // scoresList data from CSV
+        loadGames(scoresList).then((loadedGames) => {
+          games = loadedGames;
+          createYearFilters(games); // generate year filters based on the dataset, it's needed only once
+          renderGames({ games }); // render games after loading
         });
-        const textFiltered = filterGamesByText({
-            list: yearFiltered,
-            text: getTextFilterValue(),
+    });
+
+    // setup search
+    document.getElementById("game-search").addEventListener("input", debounce(() => {
+        const filtered = filterGamesByAllTerms({ list: games, });
+        renderGames({ games: filtered });
+    }));
+
+    // setup filter buttons
+    document.getElementById("filters").addEventListener("click", (ev) => {
+        if (!ev.target.getAttribute("data-filter")) return;
+        const self = document.getElementById("filters");
+        const buttons = self.querySelectorAll(".filter-btn");
+        const swapClasses = [
+          "bg-gray-800", "text-black", "text-white", "selected", "active"
+        ];
+        // reset all buttons
+        buttons.forEach((btn) => {
+            btn.classList.remove(...swapClasses);
+            const filter = btn.getAttribute("data-filter");
+            const color = getButtonColor(filter);
+            btn.classList.add(color);
         });
-        const result = textFiltered;
-        return result || [];
-      }
+        // set the clicked button
+        const btn = ev.target;
+        const filterValue = btn.getAttribute("data-filter");
+        const color = getButtonColor(filterValue);
+        btn.classList.remove(color);
+        btn.classList.add(...swapClasses);
 
-      function filterGamesByText({list, text}) {
-        const found = list.filter((game) => game.fullTextSearch.includes(text));
-        return found || [];
-      }
+        const filtered = filterGamesByAllTerms({
+          list: games,
+        });
+        // trigger the render with filtered games
+        renderGames({ games: filtered });
+    });
 
-      function filterGamesByYear({list, year}) {
-        if (year === "all") {
-          return list;
+    // setup clipboard copy
+    document.addEventListener("click", (ev) => {
+        // const el = ev.target.closest("a");
+        // const action = el ? el.getAttribute("data-action") : null;
+        const el = ev.target.closest("[data-action]");
+        const action = el ? el.getAttribute("data-action") : null;
+        if (!action) return;
+
+        if (action === "clipboard-copy") {
+            const ael = ev.target.closest("a");
+            ev.preventDefault();
+            if (ael) {
+                const text = window.location.toString().split('#')[0] + ael.getAttribute('href')
+                copyToClipboard(text);
+            }
         }
-        const found = list.filter((game) => game.year == year);
-        return found || [];
-      }
 
-      function getTextFilterValue() {
-          const searchInput = document.getElementById("game-search");
-          const searchTerm = searchInput.value.toLowerCase();
-          return searchTerm;
-      }
+        if (action === "clipboard-copy-modal") {
+            ev.preventDefault();
+            const challengeNum = el.getAttribute("data-challenge");
+            if (challengeNum) {
+                const text = window.location.toString().split('#')[0] + `#sfida-${challengeNum}`;
+                copyToClipboard(text);
+            }
+        }
 
-      function getYearFilterValue() {
-          const btn = document.getElementById("filters").querySelectorAll(".filter-btn.selected")[0];
-          if (!btn) return "all";
-          const filter = btn.getAttribute("data-filter");
-          return filter.replace("year_", "");
-      }
+        if (action === "close-modal") {
+            ev.preventDefault();
+            closeModal();
+        }
 
-      // Fetch game data from CSV
-      async function loadGames(games) {
-          try {
-              games = games.map((game) => {
-                  const id = game.id,
-                      date = game.data,
-                      challengeNum = game["sfida n."],
-                      title = game.titolo
-                          ? game.titolo.toUpperCase()
-                          : "UNKNOWN GAME",
-                      rules = game.regole,
-                      romset = game.romset,
-                      p1pts = game.pos_01_pts,
-                      p1name = game.pos_01_name,
-                      p2pts = game.pos_02_pts,
-                      p2name = game.pos_02_name,
-                      p3pts = game.pos_03_pts,
-                      p3name = game.pos_03_name,
-                      p4pts = game.pos_04_pts,
-                      p4name = game.pos_04_name,
-                      p5pts = game.pos_05_pts,
-                      p5name = game.pos_05_name,
-                      p6pts = game.pos_06_pts,
-                      p6name = game.pos_06_name,
-                      p7pts = game.pos_07_pts,
-                      p7name = game.pos_07_name,
-                      p8pts = game.pos_08_pts,
-                      p8name = game.pos_08_name,
-                      p9pts = game.pos_09_pts,
-                      p9name = game.pos_9_name,
-                      p10pts = game.pos_10_pts,
-                      p10name = game.pos_10_name,
-                      p11pts = game.pos_11_pts,
-                      p11name = game.pos_11_name,
-                      p12pts = game.pos_12_pts,
-                      p12name = game.pos_12_name,
-                      p13pts = game.pos_13_pts,
-                      p13name = game.pos_13_name,
-                      p14pts = game.pos_14_pts,
-                      p14name = game.pos_14_name,
-                      p15pts = game.pos_15_pts,
-                      p15name = game.pos_15_name;
-
-                  // Extract year from date
-                  const d = date ? new Date(date) : new Date();
-                  const year = d.getFullYear();
-                  const simpleDate = d.toLocaleDateString();
-                  // Generate random genre for now since it's not in the CSV
-                  const genre = game.genere || null;
-                  const screenshot = `https://scorez.one/assets/webp/${id}-screen.webp`;
-                  const logo = `https://scorez.one/assets/webp/${id}-title.webp`;
-
-                  const allNames = [
-                      p1name,
-                      p2name,
-                      p3name,
-                      p4name,
-                      p5name,
-                      p6name,
-                      p7name,
-                      p8name,
-                      p9name,
-                      p10name,
-                      p11name,
-                      p12name,
-                      p13name,
-                      p14name,
-                      p15name,
-                  ];
-
-                  const playersCount = allNames.filter(
-                      (name) => name && name.length,
-                  ).length;
-
-                  const fullTextSearch = [
-                      `#${id}`,
-                      challengeNum,
-                      title,
-                      simpleDate,
-                      date,
-                      ...allNames,
-                      playersCount,
-                      rules,
-                      romset,
-                  ]
-                      .join(" ")
-                      .replace("\r", "")
-                      .replace("\n", "")
-                      .toLowerCase();
-                  return {
-                      id,
-                      challengeNum,
-                      date,
-                      simpleDate,
-                      title,
-                      rules,
-                      romset,
-                      year,
-                      genre,
-                      color: getColorForGame({ genre, title }),
-                      players: [
-                          { name: p1name, points: p1pts },
-                          { name: p2name, points: p2pts },
-                          { name: p3name, points: p3pts },
-                          { name: p4name, points: p4pts },
-                          { name: p5name, points: p5pts },
-                          { name: p6name, points: p6pts },
-                          { name: p7name, points: p7pts },
-                          { name: p8name, points: p8pts },
-                          { name: p9name, points: p9pts },
-                          { name: p10name, points: p10pts },
-                          { name: p11name, points: p11pts },
-                          { name: p12name, points: p12pts },
-                          { name: p13name, points: p13pts },
-                          { name: p14name, points: p14pts },
-                          { name: p15name, points: p15pts },
-                      ].filter((p) => p.name && p.name.trim() !== ""),
-                      screenshot,
-                      playersCount,
-                      fullTextSearch,
-                      winnerName: p1name || null,
-                  };
-              });
-
-              games.sort((a, b) => {
-                  return a.challengeNum < b.challengeNum ? 1 : -1;
-              });
-              return games;
-          } catch (error) {
-              console.error("loadGames Error loading games:", error);
-              renderGames();
-              return [];
-          }
-      }
-
-          function gameCardContentTemplate(game) {
-              return `
-                      <div class="absolute top-0 left-0 w-full no-h-1/3 h-48 bg-black bg-opacity-30 z-10"></div>
-
-                      <a
-                          href="#sfida-${game.challengeNum}"
-                          class="
-                              absolute
-                              top-2
-                              right-2
-                              retro-font
-                              text-white
-                              text-[10px]
-                              ${game.color}
-                              px-2 py-1
-                              pixel-border
-                              z-20"
-                          title="Sfida n. ${game.challengeNum}"
-                          data-action="clipboard-copy">
-                              #${game.challengeNum}
-                      </a>
-
-                      <div class="relative h-48 overflow-hidden">
-                          <img
-                              alt=" "
-                              class="w-full h-full object-cover object-top"
-                              loading="lazy"
-                              src="${game.screenshot}">
-                      </div>
-
-                      <div class="p-4">
-                          <h3 class="retro-font text-white text-lg mb-2">${game.title}</h3>
-                          <p class="text-white text-opacity-80 text-xs mb-3">romset: ${
-                              game.romset
-                          }</p>
-
-                          <div class="flex justify-between items-center mb-3">
-                              <span class="retro-font text-xs text-white bg-blackk px-2 py-1 pixel-border">
-                                  ${game.simpleDate || game.year || game.date || "n/a"}
-                              </span>
-                              <div class="text-xs" title="${game.playersCount} / 15 partecipanti">
-                                  ${generateStars(game)}
-                              </div>
-                          </div>
-                          <button class="w-full retro-font pixel-button bg-white text-black py-2 text-xs hover:bg-gray-200 whitespace-nowrap overflow-hidden text-ellipsis">${game.winnerName ? `🏆 ${game.winnerName}` : "n/a"}</button>
-                      </div>
-
-                      <div class="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"></div>
-                      <div class="absolute bottom-0 left-0 w-16 h-1 bg-red-500"></div>
-                  `;
-          }
-
-          // Create dynamic year filter buttons based on the dataset
-          function createYearFilters(games) {
-              if (!games || games.length === 0) return;
-
-              // Find the min and max years in the dataset
-              const years = games
-                  .map((game) => game.year)
-                  .filter((year) => year && !isNaN(year));
-              if (years.length === 0) return;
-
-              const startYear = Math.min(...years);
-              const endYear = Math.max(...years);
-
-              const yearFiltersContainer = document.getElementById("filters");
-
-              // Generate a filter button for each decade
-              const els = [];
-              for (
-                  let currentYear = startYear;
-                  currentYear <= endYear;
-                  currentYear += 1
-              ) {
-                  const yearName = currentYear;
-                  const yearButton = document.createElement("button");
-                  const yearFilter = `year_${currentYear}`;
-                  yearButton.className = `retro-font pixel-button text-black px-4 py-2 text-xs active:bg-purple-600 filter-btn`;
-                  yearButton.setAttribute("data-filter", yearFilter);
-                  yearButton.textContent = yearName;
-
-                  const buttonColor = getButtonColor(yearFilter);
-                  yearButton.classList.add(buttonColor);
-                  els.push(yearButton);
-              }
-              els.reverse();
-              yearFiltersContainer.append(...els);
-          }
-
-          function getButtonColor(filter) {
-              if (filter.startsWith("year")) {
-                  const colors = [
-                      "bg-blue-400",
-                      "bg-green-400",
-                      "bg-teal-400",
-                      "bg-red-400",
-                      "bg-fuchsia-400",
-                      "bg-yellow-400",
-                      "bg-orange-400",
-                      "bg-violet-400",
-                  ];
-                  const colorIndex =
-                      parseInt(filter.replace("year_", "")) % colors.length;
-                  return colors[colorIndex];
-              }
-              switch (filter) {
-                  case "all":
-                      return "bg-red-500";
-                  case "action":
-                      return "bg-blue-500";
-                  case "adventure":
-                      return "bg-green-500";
-                  case "rpg":
-                      return "bg-yellow-500";
-                  case "platformer":
-                      return "bg-purple-500";
-                  default:
-                      return "bg-gray-500";
-              }
-          }
-
-          function getColorForGame({ genre, title }) {
-              const colorsN = [
-                  "bg-amber-400",
-                  "bg-blue-400",
-                  "bg-cyan-400",
-                  "bg-emerald-400",
-                  "bg-fuchsia-400",
-                  "bg-green-400",
-                  "bg-indigo-400",
-                  "bg-lime-400",
-                  "bg-orange-400",
-                  "bg-pink-400",
-                  "bg-purple-400",
-                  "bg-red-400",
-                  "bg-sky-400",
-                  "bg-teal-400",
-                  "bg-violet-400",
-                  "bg-yellow-400",
-              ];
-              const colorsG = {
-                  action: colorsN[0],
-                  adventure: colorsN[1],
-                  rpg: colorsN[2],
-                  platformer: colorsN[3],
-              };
-              const gen = genre ? colorsG[genre.toLowerCase()] : null;
-              const name = title ? colorsN[title.length % colorsN.length] : null;
-              return gen || name || "bg-gray-500";
-          }
-
-          function renderEmptyList() {
-            const container = document.getElementById("game-container");
-            container.innerHTML = `
-                <article class="
-                    absolute
-                    bg-red-400
-                    game-card
-                    overflow-hidden crt
-                    pixel-border
-                    right-0 left-0
-                    text-center
-                    text-white
-                    top-0
-                    w-full
-                    p-4
-                    retro-font
-                ">
-                    <i>Nessun risultato. Cerca qualcos'altro.</i>
-                </article>
-            `;
-            return container;
-          }
-
-          function renderSearching() {
-            const container = document.getElementById("game-container");
-            container.innerHTML = `
-                <article class="
-                    absolute
-                    bg-stone-400
-                    game-card
-                    overflow-hidden crt
-                    pixel-border
-                    right-0 left-0
-                    text-center
-                    text-white
-                    top-0
-                    w-full
-                    p-4
-                    pt-10
-                    pb-10
-                    retro-font
-                ">
-                    <i>Caricamento...</i>
-                </article>
-            `;
-            return container;
-          }
-
-          // Update renderGames to use createGameCard
-          function renderGames({ games = [] } = {}) {
-              renderSearching();
-              debounce(() => {
-                if (games.length === 0) {
-                   renderEmptyList();
-                   return;
-                }
-                const container = document.getElementById("game-container");
-                container.innerHTML = "";
-                games.forEach((game) => {
-                    const gameCard = createGameCard(game);
-                    container.appendChild(gameCard);
+        if (action.startsWith("open-")) {
+            ev.preventDefault();
+            const challengeNum = action.replace("open-", "");
+            const game = games.find((g) => g.challengeNum == challengeNum);
+            if (game) {
+                showDetails(game);
+                Toastify({
+                    text: `Apertura dettagli sfida n. ${game.challengeNum}`,
+                    duration: 2000,
+                    className: `
+                        retro-font
+                        text-xs
+                    `,
+                    style: {
+                        background: '#22c55e',
+                        color: 'white',
+                    },
                 });
-              }, 220)();
-          }
+            }
+        }
+    });
 
-          // Function to create game card (extracted for reuse)
-          function createGameCard(game) {
-              const gameCard = document.createElement("article");
-              gameCard.setAttribute("id", `sfida-${game.challengeNum}`);
-              gameCard.className = `game-card pixel-border ${game.color} relative overflow-hidden crt`;
-              gameCard.innerHTML = gameCardContentTemplate(game);
-              return gameCard;
-          }
+    function filterGamesByAllTerms({list}) {
+      const yearFiltered = filterGamesByYear({
+        list: list,
+        year: getYearFilterValue(),
+      });
+      const textFiltered = filterGamesByText({
+          list: yearFiltered,
+          text: getTextFilterValue(),
+      });
+      const result = textFiltered;
+      return result || [];
+    }
 
-          // Function to generate star rating
-          function generateStars({ playersCount }) {
-              const rating = Math.round((playersCount / 15) * 5);
-              let stars = "";
-              for (let i = 0; i < 5; i++) {
-                  if (i < rating) {
-                      stars += '<i class="fas fa-star text-yellow-400"></i>';
-                  } else {
-                      stars += '<i class="far fa-star text-yellow-400"></i>';
-                  }
-              }
-              return stars;
+    function filterGamesByText({list, text}) {
+      const found = list.filter((game) => game.fullTextSearch.includes(text));
+      return found || [];
+    }
+
+    function filterGamesByYear({list, year}) {
+      if (year === "all") {
+        return list;
+      }
+      const found = list.filter((game) => game.year == year);
+      return found || [];
+    }
+
+    function getTextFilterValue() {
+        const searchInput = document.getElementById("game-search");
+        const searchTerm = searchInput.value.toLowerCase();
+        return searchTerm;
+    }
+
+    function getYearFilterValue() {
+        const btn = document.getElementById("filters").querySelectorAll(".filter-btn.selected")[0];
+        if (!btn) return "all";
+        const filter = btn.getAttribute("data-filter");
+        return filter.replace("year_", "");
+    }
+
+    // Fetch game data from CSV
+    async function loadGames(games) {
+      try {
+          games = games.map((game) => {
+              const id = game.id,
+                  date = game.data,
+                  challengeNum = game["sfida n."],
+                  title = game.titolo
+                      ? game.titolo.toUpperCase()
+                      : "UNKNOWN GAME",
+                  rules = game.regole,
+                  romset = game.romset,
+                  p1pts = game.pos_01_pts,
+                  p1name = game.pos_01_name,
+                  p2pts = game.pos_02_pts,
+                  p2name = game.pos_02_name,
+                  p3pts = game.pos_03_pts,
+                  p3name = game.pos_03_name,
+                  p4pts = game.pos_04_pts,
+                  p4name = game.pos_04_name,
+                  p5pts = game.pos_05_pts,
+                  p5name = game.pos_05_name,
+                  p6pts = game.pos_06_pts,
+                  p6name = game.pos_06_name,
+                  p7pts = game.pos_07_pts,
+                  p7name = game.pos_07_name,
+                  p8pts = game.pos_08_pts,
+                  p8name = game.pos_08_name,
+                  p9pts = game.pos_09_pts,
+                  p9name = game.pos_9_name,
+                  p10pts = game.pos_10_pts,
+                  p10name = game.pos_10_name,
+                  p11pts = game.pos_11_pts,
+                  p11name = game.pos_11_name,
+                  p12pts = game.pos_12_pts,
+                  p12name = game.pos_12_name,
+                  p13pts = game.pos_13_pts,
+                  p13name = game.pos_13_name,
+                  p14pts = game.pos_14_pts,
+                  p14name = game.pos_14_name,
+                  p15pts = game.pos_15_pts,
+                  p15name = game.pos_15_name;
+
+              // Extract year from date
+              const d = date ? new Date(date) : new Date();
+              const year = d.getFullYear();
+              const simpleDate = d.toLocaleDateString();
+              // Generate random genre for now since it's not in the CSV
+              const genre = game.genere || null;
+              const screenshot = `https://scorez.one/assets/webp/${id}-screen.webp`;
+              const logo = `https://scorez.one/assets/webp/${id}-title.webp`;
+
+              const allNames = [
+                  p1name,
+                  p2name,
+                  p3name,
+                  p4name,
+                  p5name,
+                  p6name,
+                  p7name,
+                  p8name,
+                  p9name,
+                  p10name,
+                  p11name,
+                  p12name,
+                  p13name,
+                  p14name,
+                  p15name,
+              ];
+
+              const playersCount = allNames.filter(
+                  (name) => name && name.length,
+              ).length;
+
+              const fullTextSearch = [
+                  `#${id}`,
+                  challengeNum,
+                  title,
+                  simpleDate,
+                  date,
+                  ...allNames,
+                  playersCount,
+                  rules,
+                  romset,
+              ]
+                  .join(" ")
+                  .replace("\r", "")
+                  .replace("\n", "")
+                  .toLowerCase();
+              return {
+                  id,
+                  challengeNum,
+                  date,
+                  simpleDate,
+                  title,
+                  rules,
+                  romset,
+                  year,
+                  genre,
+                  color: getColorForGame({ genre, title }),
+                  players: [
+                      { name: p1name, points: p1pts },
+                      { name: p2name, points: p2pts },
+                      { name: p3name, points: p3pts },
+                      { name: p4name, points: p4pts },
+                      { name: p5name, points: p5pts },
+                      { name: p6name, points: p6pts },
+                      { name: p7name, points: p7pts },
+                      { name: p8name, points: p8pts },
+                      { name: p9name, points: p9pts },
+                      { name: p10name, points: p10pts },
+                      { name: p11name, points: p11pts },
+                      { name: p12name, points: p12pts },
+                      { name: p13name, points: p13pts },
+                      { name: p14name, points: p14pts },
+                      { name: p15name, points: p15pts },
+                  ].filter((p) => p.name && p.name.trim() !== ""),
+                  logo,
+                  screenshot,
+                  playersCount,
+                  fullTextSearch,
+                  winnerName: p1name || null,
+              };
+          });
+
+          games.sort((a, b) => {
+              return a.challengeNum < b.challengeNum ? 1 : -1;
+          });
+          return games;
+      } catch (error) {
+          console.error("loadGames Error loading games:", error);
+          renderGames();
+          return [];
+      }
+    }
+
+    function gameCardContentTemplate({game, template}) {
+      if (!template) {
+        console.error('Game card template not found');
+        return '';
+      }
+      if (!game) {
+        console.error('Game data is missing');
+        return '';
+      }
+      const cardData = {
+        [`{challengeNum}`]: game.challengeNum,
+        [`{color}`]: game.color || "bg-gray-500",
+        [`{date}`]: game.simpleDate || game.year || game.date || "n/a",
+        [`{playersCount}`]: game.playersCount || 0,
+        [`{romset}`]: game.romset || "n/a",
+        [`{screenshot}`]: game.screenshot,
+        [`{simpleDate}`]: game.simpleDate || "n/a",
+        [`{stars}`]: generateStars(game),
+        [`{title}`]: game.title,
+        [`{winner}`]: game.winnerName ? `🏆 ${game.winnerName}` : "n/a",
+        [`{winnerName}`]: game.winnerName || null,
+        [`{year}`]: game.year || "n/a",
+        [`{logo}`]: game.logo || null,
+      };
+      let html = template;
+      Object.entries(cardData).forEach(([placeholder, value]) => {
+        html = html.replaceAll(placeholder, value);
+      });
+      return html;
+    }
+
+    // Create dynamic year filter buttons based on the dataset
+    function createYearFilters(games) {
+        if (!games || games.length === 0) return;
+
+        // Find the min and max years in the dataset
+        const years = games
+            .map((game) => game.year)
+            .filter((year) => year && !isNaN(year));
+        if (years.length === 0) return;
+
+        const startYear = Math.min(...years);
+        const endYear = Math.max(...years);
+
+        const yearFiltersContainer = document.getElementById("filters");
+
+        // Generate a filter button for each decade
+        const els = [];
+        for (
+            let currentYear = startYear;
+            currentYear <= endYear;
+            currentYear += 1
+        ) {
+            const yearName = currentYear;
+            const yearButton = document.createElement("button");
+            const yearFilter = `year_${currentYear}`;
+            yearButton.className = `retro-font pixel-button text-black px-4 py-2 text-xs active:bg-purple-600 filter-btn`;
+            yearButton.setAttribute("data-filter", yearFilter);
+            yearButton.textContent = yearName;
+
+            const buttonColor = getButtonColor(yearFilter);
+            yearButton.classList.add(buttonColor);
+            els.push(yearButton);
+        }
+        els.reverse();
+        yearFiltersContainer.append(...els);
+    }
+
+    function getButtonColor(filter) {
+        if (filter.startsWith("year")) {
+            const colors = [
+                "bg-blue-400",
+                "bg-green-400",
+                "bg-teal-400",
+                "bg-red-400",
+                "bg-fuchsia-400",
+                "bg-yellow-400",
+                "bg-orange-400",
+                "bg-violet-400",
+            ];
+            const colorIndex =
+                parseInt(filter.replace("year_", "")) % colors.length;
+            return colors[colorIndex];
+        }
+        switch (filter) {
+            case "all":
+                return "bg-red-500";
+            case "action":
+                return "bg-blue-500";
+            case "adventure":
+                return "bg-green-500";
+            case "rpg":
+                return "bg-yellow-500";
+            case "platformer":
+                return "bg-purple-500";
+            default:
+                return "bg-gray-500";
+        }
+    }
+
+    function getColorForGame({ genre, title }) {
+        const colorsN = [
+            "bg-amber-400",
+            "bg-blue-400",
+            "bg-cyan-400",
+            "bg-emerald-400",
+            "bg-fuchsia-400",
+            "bg-green-400",
+            "bg-indigo-400",
+            "bg-lime-400",
+            "bg-orange-400",
+            "bg-pink-400",
+            "bg-purple-400",
+            "bg-red-400",
+            "bg-sky-400",
+            "bg-teal-400",
+            "bg-violet-400",
+            "bg-yellow-400",
+        ];
+        const colorsG = {
+            action: colorsN[0],
+            adventure: colorsN[1],
+            rpg: colorsN[2],
+            platformer: colorsN[3],
+        };
+        const gen = genre ? colorsG[genre.toLowerCase()] : null;
+        const name = title ? colorsN[title.length % colorsN.length] : null;
+        return gen || name || "bg-gray-500";
+    }
+
+    function renderEmptyList() {
+      const container = document.getElementById("game-container");
+      container.innerHTML = `
+          <article class="
+              absolute
+              bg-red-400
+              game-card
+              overflow-hidden crt
+              pixel-border
+              right-0 left-0
+              text-center
+              text-white
+              top-0
+              w-full
+              p-4
+              retro-font
+          ">
+              <i>Nessun risultato. Cerca qualcos'altro.</i>
+          </article>
+      `;
+      return container;
+    }
+
+    function renderSearching() {
+      const container = document.getElementById("game-container");
+      container.innerHTML = `
+          <article class="
+              absolute
+              bg-stone-400
+              game-card
+              overflow-hidden crt
+              pixel-border
+              right-0 left-0
+              text-center
+              text-white
+              top-0
+              w-full
+              p-4
+              pt-10
+              pb-10
+              retro-font
+          ">
+              <i>Caricamento...</i>
+          </article>
+      `;
+      return container;
+    }
+
+    // Update renderGames to use createGameCard
+    function renderGames({ games = [] } = {}) {
+        renderSearching();
+        debounce(() => {
+          if (games.length === 0) {
+              renderEmptyList();
+              return;
           }
+          const container = document.getElementById("game-container");
+          const templateHtmlString = document.getElementById('game-card-template').innerHTML;
+          container.innerHTML = "";
+          games.forEach((game) => {
+              const gameCard = createGameCard({game, templateHtmlString});
+              container.appendChild(gameCard);
+          });
+        }, 220)();
+    }
+
+    // Function to show game details in a modal or similar UI
+    function showDetails(game) {
+        console.log("Game Details:", game);
+
+        const template = document.getElementById("game-details-template");
+        if (!template) {
+            console.error('Game details template not found');
+            return;
+        }
+
+        // Generate leaderboard HTML
+        const leaderboardHtml = game.players
+            .filter(player => player.name && player.name.trim() !== '')
+            .map((player, index) => {
+                const position = index + 1;
+                const isWinner = position === 1;
+                const bgColor = isWinner ? 'bg-yellow-400 text-black' : 'bg-gray-700 text-white';
+                const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : `${position}.`;
+
+                return `
+                    <div class="flex justify-between items-center p-2 ${bgColor} pixel-border mb-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-bold">${medal}</span>
+                            <span class="text-sm">${player.name}</span>
+                        </div>
+                        <span class="text-sm font-mono">${player.points || 0} pts</span>
+                    </div>
+                `;
+            }).join('');
+
+        // Prepare template data
+        const templateData = {
+            '{challengeNum}': game.challengeNum || 'N/A',
+            '{title}': game.title || 'Unknown Game',
+            '{date}': game.simpleDate || game.date || 'N/A',
+            '{stars}': generateStars(game),
+            '{playersCount}': game.playersCount || 0,
+            '{screenshot}': game.screenshot || '',
+            '{logo}': game.logo || '',
+            '{romset}': game.romset || 'N/A',
+            '{rules}': game.rules || 'Nessuna regola disponibile.',
+            '{leaderboard}': leaderboardHtml,
+            '{winnerName}': game.winnerName || 'N/A',
+            '{winnerPoints}': game.players && game.players[0] ? game.players[0].points : 'N/A',
+            '{game-color}': 'bg-gray-500',
+        };
+
+        // Clone template and replace placeholders
+        const clone = template.content.cloneNode(true);
+        const tempDiv = document.createElement('div');
+        tempDiv.appendChild(clone);
+        let html = tempDiv.innerHTML;
+
+        // Replace all placeholders
+        Object.entries(templateData).forEach(([placeholder, value]) => {
+            html = html.replaceAll(placeholder, value || 'N/A');
+        });
+
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.id = 'game-details-modal';
+        modalContainer.innerHTML = html;
+
+        // Add to body
+        document.body.appendChild(modalContainer);
+
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+
+        // Add escape key listener
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
+
+        // Store cleanup function
+        modalContainer._cleanup = () => {
+            document.removeEventListener('keydown', handleEscape);
+            document.body.style.overflow = '';
+        };
+    }
+
+    // Function to close modal
+    function closeModal() {
+        const modal = document.getElementById('game-details-modal');
+        if (modal) {
+            if (modal._cleanup) {
+                modal._cleanup();
+            }
+            modal.remove();
+        }
+    }
+
+    // Function to create game card (extracted for reuse)
+    function createGameCard({game, templateHtmlString}) {
+        const gameCard = document.createElement("article");
+        gameCard.setAttribute("id", `sfida-${game.challengeNum}`);
+        gameCard.className = `game-card pixel-border ${game.color} relative overflow-hidden crt`;
+        gameCard.innerHTML = gameCardContentTemplate({game, template: templateHtmlString});
+        return gameCard;
+    }
+
+    // Function to generate star rating
+    function generateStars({ playersCount }) {
+        const rating = Math.round((playersCount / 15) * 5);
+        let stars = "";
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars += '<i class="fas fa-star text-yellow-400"></i>';
+            } else {
+                stars += '<i class="far fa-star text-yellow-400"></i>';
+            }
+        }
+        return stars;
+    }
 
     function initData() {
         const gsheetData = window.gsheetData || {};
