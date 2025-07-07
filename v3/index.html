@@ -920,24 +920,28 @@
         };
 
         // Clone template and replace placeholders
-        let html = template.innerHTML;
+        let htmlContent = template.innerHTML;
 
         // Replace all placeholders
         Object.entries(templateData).forEach(([placeholder, value]) => {
-            html = html.replaceAll(placeholder, value || 'N/A');
+            htmlContent = htmlContent.replaceAll(placeholder, value || 'N/A');
         });
+        setupModal({htmlContent, game})
+    }
 
-        // Create modal container
-        const modalContainer = document.createElement('div');
-        modalContainer.id = 'game-details-modal';
-        modalContainer.className = 'modal-container';
-        modalContainer.setAttribute('data-slide', game.id);
-        modalContainer.innerHTML = html;
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-        // Add to body
-        document.body.appendChild(modalContainer);
-        document.addEventListener('keydown', closeModal);
+    function setupModal({htmlContent, game}) {
+      // Create modal container
+      const modalContainer = document.createElement('div');
+      modalContainer.id = 'game-details-modal';
+      modalContainer.className = 'modal-container';
+      modalContainer.setAttribute('data-slide', game.id);
+      modalContainer.innerHTML = htmlContent;
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+      // Add to body
+      document.body.appendChild(modalContainer);
+      document.addEventListener('keydown', closeModal);
+      // setupTouchEvs({element: modalContainer})
     }
 
     // Function to close modal
@@ -1078,6 +1082,45 @@
                 callback.apply(null, args);
             }, wait);
         };
+    }
+
+    function setupTouchEvs({element}) {
+      var touchstartX = 0;
+      var touchstartY = 0;
+      var touchendX = 0;
+      var touchendY = 0;
+
+      var gesuredZone = element ?? document.getElementById('gesuredZone');
+
+      gesuredZone.addEventListener('touchstart', function(event) {
+          touchstartX = event.screenX;
+          touchstartY = event.screenY;
+      }, false);
+
+      gesuredZone.addEventListener('touchend', function(event) {
+          touchendX = event.screenX;
+          touchendY = event.screenY;
+          handleGesure();
+      }, false);
+
+      function handleGesure() {
+          var swiped = 'swiped: ';
+          if (touchendX < touchstartX) {
+              alert(swiped + 'left!');
+          }
+          if (touchendX > touchstartX) {
+              alert(swiped + 'right!');
+          }
+          if (touchendY < touchstartY) {
+              // alert(swiped + 'down!');
+          }
+          if (touchendY > touchstartY) {
+              // alert(swiped + 'left!');
+          }
+          if (touchendY == touchstartY) {
+              // alert('tap!');
+          }
+      }
     }
   </script>
 </body>
