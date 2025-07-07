@@ -42,12 +42,12 @@
         <small>
           ${scoreItem.romset ? 'romset ' + scoreItem.romset + '. ' : ''}${converter.makeHtml(scoreItem.regole || '')}
         </small>
-        <img src="assets/webp/${scoreItem.id}-title.webp"  loading="lazy" alt= "">
+        <img src="app-assets/webp/${scoreItem.id}-title.webp"  loading="lazy" alt= "">
         <div class="body">
          ${getPlayersHtml(scoreItem)}
         <p>
-          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-cover.webp"  loading="lazy" alt= "">
-          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="assets/webp/${scoreItem.id}-screen.webp"  loading="lazy" alt= "">
+          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="app-assets/webp/${scoreItem.id}-cover.webp"  loading="lazy" alt= "">
+          <img style="display: inline-block; height: 6rem; margin: 0.5rem;" src="app-assets/webp/${scoreItem.id}-screen.webp"  loading="lazy" alt= "">
         </p>
         </div>
         ${scoreItem.quote ? `<footer>— ${scoreItem.quote}</footer>` : ''}

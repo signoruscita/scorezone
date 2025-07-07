@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="https://scorez.one/">
   <meta name="twitter:image" content="https://scorez.one/assets/og-title.jpg">
   <!-- favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="app-assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="app-assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="app-assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="app-assets/favicon/site.webmanifest">
   <!-- scripts -->
   <script src="https://cdn.tailwindcss.com"></script><!-- tailwind css -->
   <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script><!-- markdown parser-->
@@ -37,7 +37,7 @@
           cache: true,
       };
   </script><!-- data for js-gsheet.js -->
-  <script src="/js-gsheet.js"></script><!-- gsheet.js -->
+  <script src="app-assets/js/js-gsheet.js"></script><!-- gsheet.js -->
   <!-- css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /><!-- Font Awesome icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" /><!-- font for retro style -->
@@ -378,8 +378,8 @@
         version: "v0.0.1",
         date: "2025-07-06",
         url: {
-          getScreenshot: (gameID) => `https://scorez.one/assets/webp/${gameID}-screen.webp`,
-          getLogo: (gameID) => `https://scorez.one/assets/webp/${gameID}-title.webp`,
+          getScreenshot: (gameID) => `/assets/webp/${gameID}-screen.webp`,
+          getLogo: (gameID) => `/assets/webp/${gameID}-title.webp`,
         },
         localisation: {
           scheda_data_valore_default: '??',

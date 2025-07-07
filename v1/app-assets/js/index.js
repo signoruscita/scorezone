@@ -4,6 +4,8 @@
   const {scoresList, filters} = data_setup(rawData);
 
   const CONST = {
+    basepath: '/v1/',
+    basePathGameImages: '/assets/webp/',
     els: {
       search: () => { return document.getElementById('search')},
       anniInput: () => { return document.querySelectorAll('#filtro-anno input[name="filter-date"]')},
@@ -215,7 +217,7 @@
         id="${CONST.attrs.sfidaId.replace('{id}', scoreItem.id)}"
         class="scheda mt2 mb2 nes-container with-title is-rounded ${CONST.css.lazybg}" ${CONST.attrs.dataFilter}="${new Date(scoreItem.data).getFullYear()}"
         style="
-          background-image: url('assets/webp/${scoreItem.id}-cover.webp');
+          background-image: url('${CONST.basePathGameImages}${scoreItem.id}-cover.webp');
           background-size: cover;
           background-position: center;
         "
@@ -231,7 +233,7 @@
 
         <header class="text-center">
           <img class="scoreitem-img"
-            src="assets/webp/${scoreItem.id}-title.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
+            src="${CONST.basePathGameImages}${scoreItem.id}-title.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
         </header>
 
         <div class="body mt1">
@@ -258,7 +260,7 @@
 
         <footer class="text-center mt1">
           <img class="scoreitem-img"
-            src="assets/webp/${scoreItem.id}-screen.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
+            src="${CONST.basePathGameImages}${scoreItem.id}-screen.webp" onerror="onImageLoadError(this)" loading="lazy" alt= " " />
         </footer>
       </section>
     `
@@ -336,7 +338,7 @@
           <label for="search" style="flex-grow: 2; text-align: left;">
             <span class="nes-btn">
               <img
-                src="assets/search.png"
+                src="${CONST.basepath}app-assets/search.png"
                 width="16"
                 height="16"
                 class="dib"
