@@ -1,0 +1,261 @@
+@font-face{
+  font-family: "Emulogic";
+  src: url("../fonts/Emulogic.eot");
+  src: url("../fonts/Emulogic.iefix.eot?#iefix")format("embedded-opentype"),
+      url("../fonts/Emulogic.woff")format("woff"),
+      url("../fonts/Emulogic.woff2")format("woff2"),
+      url("../fonts/Emulogic.ttf")format("truetype"),
+      url("../fonts/Emulogic.svg#Emulogic")format("svg");
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
+
+
+.lazybg {
+  background-image: none !important;
+}
+html {
+  --s: 101px; /* control the size*/
+  --c1: #2e2e2e;
+  --c2: #821719;
+  --c3: #9c9cc9;
+
+  --a:from -30deg at;
+  background:
+    linear-gradient(#0000 50%,#0004 0),
+    conic-gradient(var(--a) 90%,var(--c1) 240deg,#0000     0),
+    conic-gradient(var(--a) 75%,var(--c2) 240deg,#0000     0),
+    conic-gradient(var(--a) 25%,#0000     240deg,var(--c1) 0),
+    conic-gradient(var(--a) 40%,var(--c1) 240deg,var(--c3) 0);
+  background-size: calc(1.5*var(--s)) var(--s);
+
+  /* background: #fafafa; */
+}
+
+body {
+  color: #272727;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  margin: 1rem auto auto;
+  max-width: 800px;
+  padding-bottom: 5rem;
+  background-color: transparent
+}
+.title, h1, h2, h3, h4, h5, h6 {
+    font-family: "Press Start 2P";
+}
+
+.nes-container > .title > i.nes-logo {
+  height: 20px;
+  top: -20px;
+}
+
+.nes-container > .title > i.nes-icon.coin,
+.nes-container > .title > i.nes-icon.close{
+  height: 16px;
+  top: 0;
+  margin-top: -16px;
+}
+
+dd > * {
+  margin: 0;
+  padding: 0;
+}
+
+input, button, label {
+  cursor: pointer;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* fix overflow */
+[data-filter]>span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-filter-text="false"],
+[data-filter-date="false"] {
+  display: none;
+}
+.pixelify-sans {
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.mp0 {
+  margin: 0;
+  padding: 0;
+}
+
+.mt1 {
+  margin-top: 1rem;
+}
+.mb1 {
+  margin-bottom: 1rem;
+}
+
+.mr1 {
+  margin-right: 1rem;
+}
+
+.mt2 {
+  margin-top: 2rem !important;
+}
+
+.mb2 {
+  margin-bottom: 2rem !important;
+}
+
+.dib {
+  display: inline-block;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.list-simple {
+  list-style-type: none;
+}
+
+/* Scroll back to top */
+.scroll-btn {
+  position: fixed;
+  bottom: -60px;
+  right: 2rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,.6);
+  transition: all 0.3s ease;
+}
+.scroll-btn.active {
+  bottom: 25px;
+}
+.scroll-btn > span {
+  display: block;
+  transform: rotateZ(90deg);
+}
+
+.nowrap {
+ white-space: nowrap;
+}
+
+nav {
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+
+.pattern-bg,
+.pattern-bg .title
+.nes-container > .title > i.nes-icon.coin,
+.nes-container > .title > i.nes-icon.close{
+    background-color: #fafafa;
+}
+
+.pattern-triangles-md * {
+  color: #242424;
+}
+
+.color-gold {
+  color: #d4c816;
+}
+
+.scheda {
+  margin-left: -2rem !important;
+  margin-right: -2rem !important;
+}
+
+.scheda footer .scoreitem-img {
+  height: 20vh;
+  max-width: 45%;
+}
+
+.scheda header .scoreitem-img {
+  height: auto;
+  width: 50%;
+  max-width: 50%;
+}
+
+
+.scheda.nes-container.with-title>.title,
+.scheda > .title {
+  background: transparent;
+  background-color: transparent;
+}
+.scheda > .title > .nes-btn {
+  opacity: 0.9;
+  cursor: unset;
+}
+
+.scheda > header,
+.scheda > .body,
+.scheda > footer {
+  background-color: rgba(0,0,0,.9);
+  padding: 1rem;
+  border: 0.1rem solid #000;
+  border-radius: 0.15rem;
+  box-shadow: 0.5rem 0.5rem 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.scheda > .body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.scheda > .body .regole > ul,
+.scheda > .body .regole > ul > li {
+  list-style-type: disclosure-closed;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
+.text-light {
+  font-weight: 400;
+}
+
+/* loader - start */
+.loader {
+  margin: 0 auto;
+  padding: 6rem 0;
+  width: 20%;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
+  background:
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 50%;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+    20%{background-position:0%   0%, 50%  50%,100%  50%}
+    40%{background-position:0% 100%, 50%   0%,100%  50%}
+    60%{background-position:0%  50%, 50% 100%,100%   0%}
+    80%{background-position:0%  50%, 50%  50%,100% 100%}
+}
+/* loader - end */
+
+.toast-close  {
+  color: #000
+}
+
+.text-mono {
+  font-family: "Emulogic", monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.6em;
+}
