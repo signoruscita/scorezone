@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>ui test</title>
+</head>
+<body>
+<script src="/v1/app-assets/js/js-gsheet.js"></script>
+<script>
+  gsheetData = {
+    documentId: '1K9ODGumqgOMmOaZK_JcQh8CqgV27bljJherN4WylKFA', // id from gsheet "shared with anyone"
+    sheetName: 'scorezone-database',
+    cache: true,
+  };
+  var doc = gsheetjs.downloadSheet({
+    documentId: gsheetData.documentId,
+    sheetName: gsheetData.sheetName,
+    cache: gsheetData.cache,
+  });
+  Promise.resolve(doc).then((data) => {
+    const out = [
+      [
+        'player',
+      ]
+    ];
+
+    var tuttiGiocatorePunteggi = {};
+
+    data.forEach((d, di) => {
+      for (let i = 1;i<16;i++) {
+        const nameV = d[`pos_0${i}_name`];
+        if (!nameV) continue;
+        const name = stringClean(nameV);
+        if (!name) continue;
+        const pts = d[`pos_0${i}_pts`];
+        tuttiGiocatorePunteggi[name] = tuttiGiocatorePunteggi[name] || {};
+        tuttiGiocatorePunteggi[name][d.id] = pts || 0;
+      }
+    })
+    console.log('tuttiGiocatorePunteggi', tuttiGiocatorePunteggi);
+    // console.log('out', out);
+
+    const csv = out.reduce((acc, line) => {
+      acc.push(line.join(','));
+      return acc;
+    }, []).join('\n');
+
+    console.log(csv);
+
+  });
+
+  function getGameImage(gameId) {
+    return `/assets/webp/${gameId}-title.webp`;
+  }
+
+  function extractAllPlayers(data) {
+    const all = [];
+    data.forEach((s) => {
+      const players = extractPlayers(s);
+      all.push(...players);
+    });
+    return all.unique = [...new Set(all.filter(p => p))];
+  }
+
+  function extractPoints(s, p) {
+    try {
+      const keys = Object.keys(s);
+      const pk = keys.find((key) => `${s[key]}`.includes(p));
+      return s[pk.replace('name', 'pts')] || 0;
+    } catch {
+      // Handle error gracefully
+      // console.error(`Error extracting points for player ${p}`);
+      return 0;
+    }
+  }
+
+  function extractPlayers(s) {
+    return Object.entries(s).reduce((acc, [k, v]) => {
+      if (k.includes('name')) {
+        return [...acc, stringClean(v).trim()];
+      }
+      return acc;
+    }, []).filter(p => p);
+  }
+
+  function stringClean(s) {
+    return `${s}`.replace(/[^a-zA-Z0-9_()\[\]\s.]/g, '').trim();
+  }
+
+</script>
+
+</body>
+</html>
