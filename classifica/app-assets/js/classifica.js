@@ -4,6 +4,7 @@
   const {scoresList, filters} = data_setup(rawData);
 
   const CONST = {
+    basepath: '/classifica/',
     els: {
       search: () => { return document.getElementById('search')},
       anniInput: () => { return document.querySelectorAll('#filtro-anno input[name="filter-date"]')},
@@ -349,7 +350,7 @@
           <label for="search" style="flex-grow: 2; text-align: left;">
             <span class="nes-btn">
               <img
-                src="/assets/search.png"
+                src="${CONST.basepath}app-assets/search.png"
                 width="16"
                 height="16"
                 class="dib"
